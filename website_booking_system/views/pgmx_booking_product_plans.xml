@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <!-- PGMX BOOKING PRODUCT PLANS VIEWS -->
+
+        <record id="pgmx_booking_product_plans_action" model="ir.actions.act_window">
+            <field name="name">Product Plans</field>
+            <field name="res_model">pgmx.booking.product.plans</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.ui.view" id="pgmx_booking_product_plans_form">
+            <field name="name">pgmx.booking.product.plans.view.form</field>
+            <field name="model">pgmx.booking.product.plans</field>
+            <field name="arch" type="xml">
+                <form name="Product Plans">
+                    <sheet>
+                        <group>
+                            <field name="plan_id"/>
+                            <field name="price"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="pgmx_booking_product_plans_tree">
+            <field name="name">pgmx.booking.product.plans.view.tree</field>
+            <field name="model">pgmx.booking.product.plans</field>
+            <field name="arch" type="xml">
+                <tree name="Product Plans" editable="bottom">
+                    <field name="plan_id" options="{'no_create':True, 'create_edit': false, 'no_open': True}"/>
+                    <field name="price"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

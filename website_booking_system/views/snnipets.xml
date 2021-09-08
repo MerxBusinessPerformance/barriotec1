@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- website_sale.dynamic_filter_template_header_image_footer_card
+
+        <br/>
+        <span t-if="record['extra_fields']['booking_rom_num']"> # Cuartos: <t t-esc="record['extra_fields']['booking_rom_num']"/></span><br/>
+        <span t-if="record['extra_fields']['booking_floor']"> Piso: <t t-esc="record['extra_fields']['booking_floor']"/></span><br/>
+        <span t-if="record['extra_fields']['booking_area']"> Área Depa: <t t-esc="record['extra_fields']['booking_area']"/></span><br/>
+        <span t-if="record['extra_fields']['booking_lookout_area']"> Área Balcón: <t t-esc="record['extra_fields']['booking_lookout_area']"/></span><br/>
+        <span t-if="record['extra_fields']['booking_lookout']"> Vista a Calle: <t t-esc="record['extra_fields']['booking_lookout']"/></span><br/>
+
+        -->
+
+        <record id="website_sale.dynamic_filter_demo_products" model="website.snippet.filter">
+            <field name="field_names">display_name,description_sale,image_512,list_price,id</field>
+        </record>
+
+    </data>
+</odoo>
