@@ -1,0 +1,114 @@
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color:#875A7B;"><b>Forms | Website</b> - <small style="color:#875A7B;"><em> Snippet etc.</em><small></h2>
+    <h3 class="oe_slogan">Drag & drop webforms everywhere on the website</h3>
+  </div>
+</section>
+
+<section class="oe_container oe_dark">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color:#875A7B;">Website Form Snippet</h2>
+    <div class="oe_row_img oe_centered">
+      <h4 class="oe_mb16 text-center">Website Builder - Snippet</h4>
+      <p>
+        Website (snippet) Forms are avaiable for <strong>Form Builders</strong> where checkbox/field <strong>public</strong> is checked.
+      </p>
+      <img class="oe_demo oe_picture oe_screenshot" src="website_builder_formio_snippet.png">
+    </div>
+    <div class="oe_row_img oe_centered">
+      <h4 class="oe_mb16 text-center">Website - Form on webpage</h4>
+      <img class="oe_demo oe_picture oe_screenshot" src="website_formio_form.png">
+    </div>
+  </div>
+</section>
+
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <div class="oe_span6">
+      <div class="alert alert-info" style="padding:8px;font-weight:300;font-size:20px;">
+	<i class="fa fa-hand-o-right"></i><b> Features: </b>
+	<ul class="list-unstyled">
+          <li>
+	    <i class="fa fa-check-square-o text-primary"></i>
+            Powerful <strong>"Drag and drop" Form Builder</strong> in Odoo.
+	  </li>
+          <li>
+	    <i class="fa fa-check-square-o text-primary"></i>
+            <strong>On-premise</strong> (your server) hosting and storage of data (Form Builders, Submissions etc). So you're under control!
+	  </li>
+          <li>
+	    <i class="fa fa-check-square-o text-primary"></i>
+	    After installation of this module you can <strong>start right away</strong> with building and adding Forms on the Website.
+	  </li>
+          <li>
+	    <i class="fa fa-check-square-o text-primary"></i>
+            <strong>Open source</strong>, so contributions are welcome.
+          </li>
+	</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="oe_container oe_dark">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color:#875A7B;">Releases</h2>
+    <h4 class="oe_mb16">1.7</h4>
+    <ul>
+      <li>
+        Fix JavaScript error: <code>iframeResize is not defined</code>.<br/>
+        This error was usually not obvious in the UI (but shown in browser JS console).
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.6</h4>
+    <ul>
+      <li>
+        Store website visitor (Many2one) of the Form submission.
+      </li>
+      <li>
+        Store timezone (website visitor) of the Form submission.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.5</h4>
+    <ul>
+      <li>
+        Fix: Show the complete (resized) Form, after dropping on the webpage!
+      </li>
+      <li>
+        Only list published Form Builders in the drag&amp;drop selectbox (Form chooser).
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.4</h4>
+    <ul>
+      <li>
+        Configure a redirect, after (submit) submission of website Form.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.3</h4>
+    <ul>
+      <li>
+        Include a solution (module) to prevent loosing (sanitizing) the Form added to certain Website pages, from the Website Builder/Editor.<br/>
+        This adds the module dependency <strong>Website Editor Unsanitize HTML Field</strong> (<code>website_editor_unsanitize_html_field</code>).<br/>
+        It enables configuration to <strong>unsanitize specific (model) HTML Fields</strong>, upon saving the Model record from the Website Builder/Editor.<br/>
+        By default the HTML Field (class) sanitizes its data/value before storing, which causes this undesired side effect.
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.2</h4>
+    <ul>
+      <li>
+        Change the public Form loading and submit (URLs, handling) from ID to UUID.<br/>
+        This slightly protects from abuse of public Forms (some obfuscation of the real id).<br/>
+        <strong>Requires the formio (base) module version >= 5.2</strong><br/>
+        <pre>https://github.com/novacode-nl/odoo-formio/issues/46</pre>
+      </li>
+    </ul>
+    <h4 class="oe_mb16">1.1</h4>
+    <ul>
+      <li>Website Snippet improvements.</li>
+    </ul>
+    <h4 class="oe_mb16">1.0</h4>
+    <ul>
+      <li>Initial release.</li>
+    </ul>
+  </div>
+</section>
