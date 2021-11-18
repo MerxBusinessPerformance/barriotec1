@@ -12,7 +12,7 @@
             <xpath expr="//group[@name='shop']" position="after">
                 <group>
                     <field name="extra_image" widget='image' class="oe_avatar"/>
-                    <field name="extra_image_data_uri" debug="1"/>
+                    <field name="extra_image_data_uri" invisible="1"/>
                 </group>
             </xpath>
         </field>
