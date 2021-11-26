@@ -14,7 +14,7 @@ class OdooController(http.Controller):
     @http.route(
         "/barriotec/skus/<categoria_id>",
         auth="public",
-        )
+    )
     def index(self, **kw):
         self.auth()
 
@@ -81,6 +81,8 @@ class OdooController(http.Controller):
 
     def dump(self, obj, buscar=False):
         clear_console(self)
+
+        print(obj._model_fields)
         print("===========================")
         print("===========================")
         print("===========================")
@@ -96,3 +98,40 @@ class OdooController(http.Controller):
         print("===========================")
         print("===========================")
         print("===========================")
+
+    @http.route(
+        "/barriotec/plans/<ids>",
+        auth="public",
+    )
+    def planes(self, **kw):
+        self.auth()
+
+        ids = kw.get('ids').split('-')
+        datos = http.request.env['pgmx.booking.product.plans'].search(
+            [["id", "in", ids]])
+
+        self.auth(login=False)
+
+        datos = json.dumps(self.planDiccionarios(datos))
+        return http.Response(
+            datos,
+            status=200,
+            content_type="application/json"
+        )
+
+    def planDiccionarios(self, planes):
+
+        dic = {
+            'plans': []
+        }
+        for plan in planes:
+            self.dump(plan.plan_id)
+            d = {
+                'id': plan.id,
+                'name': plan.plan_id.name,
+                'price': plan.price,
+            }
+
+            dic['plans'].append(d)
+
+        return dic
