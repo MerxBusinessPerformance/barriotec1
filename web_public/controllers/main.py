@@ -135,3 +135,40 @@ class OdooController(http.Controller):
             dic['plans'].append(d)
 
         return dic
+
+    @http.route(
+        "/barriotec/imagenes/<ids>",
+        auth="public",
+    )
+    def imagenes(self, **kw):
+        self.auth()
+
+        ids = kw.get('ids').split('-')
+        datos = http.request.env['product.image'].search(
+            [["id", "in", ids]])
+
+        self.auth(login=False)
+
+        datos = json.dumps(self.imagenesDiccionario(datos))
+        return http.Response(
+            datos,
+            status=200,
+            content_type="application/json"
+        )
+
+    def imagenesDiccionario(self, imagenes):
+
+        dic = {
+            'imagenes': []
+        }
+        for imagen in imagenes:
+            self.dump(imagen, buscar="media")
+            d = {
+                'id': imagen.id,
+                'video': imagen.embed_code,
+                'image_1024': self.imagen_procesar(imagen.image_1024)
+            }
+
+            dic['imagenes'].append(d)
+
+        return dic
