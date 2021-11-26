@@ -1,19 +1,38 @@
-from odoo import http
 import json
+from odoo.tools import date_utils
+from odoo import http
+import base64
+import os
+
+
+def clear_console(self):
+    os.system('clear')
 
 
 class OdooController(http.Controller):
 
-    @http.route("/barriotec/skus", auth="public", )
+    @http.route(
+        "/barriotec/skus/<categoria_id>",
+        auth="public",
+        )
     def index(self, **kw):
         self.auth()
 
+        categoriaId = kw.get('categoria_id')
+
         productos = http.request.env['product.template'].search([
             ["is_booking_type", "=", True],
-            # ["categ_id", "=", categoriaId],
+            ["categ_id.id", "=", categoriaId],
         ])
+
         self.auth(login=False)
-        return json.dumps(self.cargarDiccionario(productos))
+
+        datos = json.dumps(self.skusGenerarDiccionario(productos))
+        return http.Response(
+            datos,
+            status=200,
+            content_type="application/json"
+        )
 
     def auth(self, login=True):
 
@@ -25,36 +44,55 @@ class OdooController(http.Controller):
             else:
                 http.request.session.logout(keep_db=True)
 
-    def cargarDiccionario(self, productos):
+    def skusGenerarDiccionario(self, productos):
 
         productos_dict = {
             'skus': []
         }
-
         for producto in productos:
-
             d = {
                 "name": producto.name,
-                # "categ_id": producto.categ_id,
+                "categ_id": [x.id for x in producto.categ_id],
                 "booking_rom_num": producto.booking_rom_num,
                 "booking_floor": producto.booking_floor,
                 "booking_area": producto.booking_area,
                 "booking_lookout_area": producto.booking_lookout_area,
-
-                # ------------------------------
                 "is_booking_type": producto.is_booking_type,
                 "website_url": producto.website_url,
-                # "booking_plan_ids": producto.booking_plan_ids,
-                # "product_template_image_ids": producto.product_template_image_ids,
-                # "image_1024": producto.image_1024,
+                "booking_plan_ids": [x.id for x in producto.booking_plan_ids],
+                "product_template_image_ids": [
+                    x.id for x in producto.product_template_image_ids],
+                "image_1024": self.imagen_procesar(producto.image_1024),
                 "description": producto.description,
-                # "cost_currency_id": producto.cost_currency_id,
+                "list_price": producto.list_price,
                 "booking_area": producto.booking_area,
                 "booking_lookout_area": producto.booking_lookout_area,
                 "booking_rom_num": producto.booking_rom_num,
                 "extra_image_data_uri": producto.extra_image_data_uri,
                 "website_url": producto.website_url
             }
+
             productos_dict['skus'].append(d)
 
         return productos_dict
+
+    def imagen_procesar(self, imagen_bytes):
+        return base64.encodebytes(imagen_bytes).decode('ascii')
+
+    def dump(self, obj, buscar=False):
+        clear_console(self)
+        print("===========================")
+        print("===========================")
+        print("===========================")
+        for attr in dir(obj):
+
+            if buscar:
+                if buscar in attr:
+                    print("obj.%s = %r" % (attr, getattr(obj, attr)))
+            else:
+                if not '__' in attr:
+                    print("obj.%s = %r" % (attr, getattr(obj, attr)))
+
+        print("===========================")
+        print("===========================")
+        print("===========================")
