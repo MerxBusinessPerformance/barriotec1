@@ -16,7 +16,7 @@ class OdooController(http.Controller):
         auth="public",
     )
     def index(self, **kw):
-        self.auth()
+        desloguear = self.auth()
 
         categoriaId = kw.get('categoria_id')
 
@@ -25,7 +25,7 @@ class OdooController(http.Controller):
             ["categ_id.id", "=", categoriaId],
         ])
 
-        self.auth(login=False)
+        self.auth(login=False, desloguear=desloguear)
 
         datos = json.dumps(self.skusGenerarDiccionario(productos))
         return http.Response(
@@ -34,15 +34,22 @@ class OdooController(http.Controller):
             content_type="application/json"
         )
 
-    def auth(self, login=True):
+    def auth(self, login=True, desloguear=False):
 
-        uid = http.request.session.uid
         # Comprobamos que no haya ningún usuario autenticado.
-        if uid == None:
-            if login:
-                http.request.session.authenticate("test", "web", "12345")
-            else:
-                http.request.session.logout(keep_db=True)
+        uid = http.request.session.uid
+        es_usuario_de_sistema = uid != None and login
+
+        if es_usuario_de_sistema and not desloguear:
+            return False
+
+        if login:
+            http.request.session.authenticate("test", "web", "12345")
+            return True
+
+        if desloguear:
+            http.request.session.logout(keep_db=False)
+            return False
 
     def skusGenerarDiccionario(self, productos):
 
@@ -104,13 +111,13 @@ class OdooController(http.Controller):
         auth="public",
     )
     def planes(self, **kw):
-        self.auth()
+        desloguear = self.auth()
 
         ids = kw.get('ids').split('-')
         datos = http.request.env['pgmx.booking.product.plans'].search(
             [["id", "in", ids]])
 
-        self.auth(login=False)
+        self.auth(login=False, desloguear=desloguear)
 
         datos = json.dumps(self.planDiccionarios(datos))
         return http.Response(
@@ -141,13 +148,13 @@ class OdooController(http.Controller):
         auth="public",
     )
     def imagenes(self, **kw):
-        self.auth()
+        desloguear = self.auth()
 
         ids = kw.get('ids').split('-')
         datos = http.request.env['product.image'].search(
             [["id", "in", ids]])
 
-        self.auth(login=False)
+        self.auth(login=False, desloguear=desloguear)
 
         datos = json.dumps(self.imagenesDiccionario(datos))
         return http.Response(
