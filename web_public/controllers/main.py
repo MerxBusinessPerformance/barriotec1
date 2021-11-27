@@ -59,7 +59,7 @@ class OdooController(http.Controller):
         for producto in productos:
             d = {
                 "name": producto.name,
-                "categ_id": [x.id for x in producto.categ_id],
+                "categ_id": [x.name for x in producto.categ_id],
                 "booking_rom_num": producto.booking_rom_num,
                 "booking_floor": producto.booking_floor,
                 "booking_area": producto.booking_area,
