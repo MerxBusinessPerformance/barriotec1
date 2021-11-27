@@ -144,6 +144,7 @@ class OdooController(http.Controller):
                 'id': plan.id,
                 'name': plan.plan_id.name,
                 'price': plan.price,
+                'description': plan.plan_id.discription,
             }
 
             dic['plans'].append(d)
