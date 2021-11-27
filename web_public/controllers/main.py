@@ -15,8 +15,8 @@ class OdooController(http.Controller):
         "/barriotec/skus/<categoria_id>",
         auth="public",
     )
-    def index(self, **kw):
-        desloguear = self.auth()
+    def index(self, db, **kw):
+        desloguear = self.auth(db=db)
 
         categoriaId = kw.get('categoria_id')
 
@@ -34,7 +34,7 @@ class OdooController(http.Controller):
             content_type="application/json"
         )
 
-    def auth(self, login=True, desloguear=False):
+    def auth(self, login=True, desloguear=False, db="test"):
 
         # Comprobamos que no haya ningún usuario autenticado.
         uid = http.request.session.uid
@@ -44,7 +44,7 @@ class OdooController(http.Controller):
             return False
 
         if login:
-            http.request.session.authenticate("test", "web", "12345")
+            http.request.session.authenticate(db, "web", "12345")
             return True
 
         if desloguear:
@@ -110,8 +110,8 @@ class OdooController(http.Controller):
         "/barriotec/plans/<ids>",
         auth="public",
     )
-    def planes(self, **kw):
-        desloguear = self.auth()
+    def planes(self, db, **kw):
+        desloguear = self.auth(db=db)
 
         ids = kw.get('ids').split('-')
         datos = http.request.env['pgmx.booking.product.plans'].search(
@@ -146,8 +146,8 @@ class OdooController(http.Controller):
         "/barriotec/imagenes/<ids>",
         auth="public",
     )
-    def imagenes(self, **kw):
-        desloguear = self.auth()
+    def imagenes(self, db, **kw):
+        desloguear = self.auth(db=db) 
 
         ids = kw.get('ids').split('-')
         datos = http.request.env['product.image'].search(
