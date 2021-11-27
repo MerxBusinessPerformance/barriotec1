@@ -132,7 +132,6 @@ class OdooController(http.Controller):
             'plans': []
         }
         for plan in planes:
-            self.dump(plan.plan_id)
             d = {
                 'id': plan.id,
                 'name': plan.plan_id.name,
@@ -169,7 +168,7 @@ class OdooController(http.Controller):
             'imagenes': []
         }
         for imagen in imagenes:
-            self.dump(imagen, buscar="media")
+            self.dump(imagen.image_1024, buscar="media")
             d = {
                 'id': imagen.id,
                 'video': imagen.embed_code,
