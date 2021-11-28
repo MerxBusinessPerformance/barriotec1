@@ -48,22 +48,27 @@ class WebsiteSale(WebsiteSale):
             from_date = datetime.strptime(bk_date, '%Y-%m-%d').date()
             to_date = datetime.strptime(bk_date_out, '%Y-%m-%d').date()
             day_diff = (to_date - from_date).days
-            day_price = product_obj.list_price / 30
 
-            if product_obj.bk_rent_mode == 'P':
-                bk_slot_obj = request.env["pgmx.booking.product.plans"].browse([int(bk_plan)])
-                line_values = {
-                    'booking_plan_line_id' : bk_slot_obj.id,
-                    'price_unit' : (day_price * day_diff) + bk_slot_obj.price,
-                    'booking_date' : bk_date if bk_date else None,
-                }
-            else:
-                bk_slot_obj = request.env["booking.slot"].browse([int(bk_plan)])
-                line_values = {
-                    'booking_slot_id' : bk_slot_obj.id,
-                    'price_unit' : (day_price * day_diff) + bk_slot_obj.price,
-                    'booking_date' : bk_date if bk_date else None,
-                }
+            # day_price = product_obj.list_price / 30
+            day_price = 1
+
+            # print('#########################$$$$$$$$$$$$$$$$$$$$',
+            #       product_obj.bk_rent_mode)
+
+            # if product_obj.bk_rent_mode == 'P':
+            bk_slot_obj = request.env["pgmx.booking.product.plans"].browse([int(bk_plan)])
+            line_values = {
+                'booking_plan_line_id' : bk_slot_obj.id,
+                'price_unit' : (day_price * day_diff) + bk_slot_obj.price,
+                'booking_date' : bk_date if bk_date else None,
+            }
+            # else:
+            #     bk_slot_obj = request.env["booking.slot"].browse([int(bk_plan)])
+            #     line_values = {
+            #         'booking_slot_id' : bk_slot_obj.id,
+            #         'price_unit' : (day_price * day_diff) + bk_slot_obj.price,
+            #         'booking_date' : bk_date if bk_date else None,
+            #     }
 
             sale_order = request.website.sale_get_order()
             order_line = sale_order.order_line.filtered(lambda l: l.product_id.id == int(product_id))
