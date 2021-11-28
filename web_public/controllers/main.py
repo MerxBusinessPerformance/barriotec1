@@ -3,7 +3,9 @@ from odoo.tools import date_utils
 from odoo import http
 import base64
 import os
+
 from random import randrange
+
 
 
 def clear_console(self):
@@ -16,8 +18,10 @@ class OdooController(http.Controller):
         "/barriotec/skus/<categoria_id>",
         auth="public",
     )
+    
     def index(self, db, **kw):
         desloguear = self.auth(db=db)
+
 
         categoriaId = kw.get('categoria_id')
 
@@ -35,6 +39,7 @@ class OdooController(http.Controller):
             content_type="application/json"
         )
 
+
     def auth(self, login=True, desloguear=False, db="test"):
 
         # Comprobamos que no haya ningún usuario autenticado.
@@ -45,7 +50,9 @@ class OdooController(http.Controller):
             return False
 
         if login:
+
             http.request.session.authenticate(db, "web", "12345")
+
             return True
 
         if desloguear:
@@ -58,6 +65,7 @@ class OdooController(http.Controller):
             'skus': []
         }
         for producto in productos:
+
             self.dump(producto, buscar="id")
 
             d = {
@@ -72,16 +80,20 @@ class OdooController(http.Controller):
                 "booking_plan_ids": [x.id for x in producto.booking_plan_ids],
                 "product_template_image_ids": [
                     x.id for x in producto.product_template_image_ids],
+
                 "image_1024":
                 'web/image/product.template/' +
                     str(producto.id)+'/image_1024/?unique=d' +
                 str(randrange(9999)),
+
                 "description": producto.description,
                 "list_price": producto.list_price,
                 "booking_area": producto.booking_area,
                 "booking_lookout_area": producto.booking_lookout_area,
                 "booking_rom_num": producto.booking_rom_num,
+
                 # Este es el campo para el plano
+
                 "extra_image_data_uri": producto.extra_image_data_uri,
                 "website_url": producto.website_url
             }
@@ -91,8 +103,9 @@ class OdooController(http.Controller):
         return productos_dict
 
     def imagen_procesar(self, imagen_bytes):
-        print(imagen_bytes)
+
         return base64.b64encode(imagen_bytes).decode('ascii')
+
 
     def dump(self, obj, buscar=False):
         clear_console(self)
@@ -118,6 +131,7 @@ class OdooController(http.Controller):
         "/barriotec/plans/<ids>",
         auth="public",
     )
+
     def planes(self, db, **kw):
         desloguear = self.auth(db=db)
 
@@ -140,11 +154,13 @@ class OdooController(http.Controller):
             'plans': []
         }
         for plan in planes:
+
             d = {
                 'id': plan.id,
                 'name': plan.plan_id.name,
                 'price': plan.price,
                 'description': plan.plan_id.discription,
+
             }
 
             dic['plans'].append(d)
@@ -157,6 +173,7 @@ class OdooController(http.Controller):
     )
     def imagenes(self, db, **kw):
         desloguear = self.auth(db=db)
+
 
         ids = kw.get('ids').split('-')
         datos = http.request.env['product.image'].search(
@@ -177,10 +194,12 @@ class OdooController(http.Controller):
             'imagenes': []
         }
         for imagen in imagenes:
+
             d = {
                 'id': imagen.id,
                 'video': imagen.embed_code,
                 'image_1024': 'web/image/product.image/'+str(imagen.id)+'/image_1024/?'+str(randrange(9999))
+
             }
 
             dic['imagenes'].append(d)
