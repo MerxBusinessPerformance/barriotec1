@@ -66,8 +66,6 @@ class OdooController(http.Controller):
         }
         for producto in productos:
 
-            self.dump(producto, buscar="id")
-
             d = {
                 "name": producto.name,
                 "categ_id": [x.name for x in producto.categ_id],
@@ -85,7 +83,6 @@ class OdooController(http.Controller):
                 'web/image/product.template/' +
                     str(producto.id)+'/image_1024/?unique=d' +
                 str(randrange(9999)),
-
                 "description": producto.description,
                 "list_price": producto.list_price,
                 "booking_area": producto.booking_area,
