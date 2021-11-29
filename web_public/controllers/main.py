@@ -86,7 +86,7 @@ class OdooController(http.Controller):
                     str(producto.id)+'/image_1024/?unique=d' +
                 str(randrange(9999)),
 
-                "description": producto.description,
+                "description": producto.description_sale,
                 "list_price": producto.list_price,
                 "booking_area": producto.booking_area,
                 "booking_lookout_area": producto.booking_lookout_area,
