@@ -277,7 +277,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                            <div class="bk_modal_heading mx-auto">BOOK YOUR SLOT</div>
+                            <div class="bk_modal_heading mx-auto">Haz tu reserva</div>
                             <button type="button" class="close fa fa-times ml-0" data-dismiss="modal" aria-hidden="false"/>
                         </div>
                         <div t-if="booking_status" class="modal-header py-2 border-0 pb-0">
@@ -287,13 +287,13 @@
                                     <div class='input-group date' id='bk_datepicker' data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
                                         <input type="text" name="bk_date" id="bk_sel_date" data-target="#bk_datepicker" style="display: none;"/>
                                         <a class="input-group-append" data-target="#bk_datepicker" data-toggle="datetimepicker">
-                                        START DATE
+                                        Seleccionar fecha de entrada
                                         </a>
                                     </div>
                                 </span>
                             </div>
                             <div class="col-4"></div>
-                            <div class="col-4">
+                            <div class="col-4" style="display:none">
                                 <span class="pull-right select_bk_date" style="font-size: 16px;color: #1CBC8C;">
                                     <div class='input-group date' id='bk_datepicker_out' data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
                                         <input type="text" name="bk_date_out" id="bk_sel_date" data-target="#bk_datepicker_out" style="display: none;"/>
