@@ -149,8 +149,15 @@
                 <t t-foreach="week_days" t-as="w_day">
                     <t t-set="s_date" t-value="w_day['date_str'].split(' ')"/>
                     <div t-att-class="'bk_days bk_active' if w_day['day'] == current_day else 'bk_days' if w_day['state'] == 'active' else 'bk_days bk_disable'" t-att-data-w_day="w_day['day']" t-att-data-w_date="w_day['date']">
-                        <div class="text-uppercase"><t t-esc="w_day['day']"/></div>
-                        <div class="text-capitalize"><span class="d-none d-sm-block"><t t-esc="s_date[1]"/>&#32;</span><span t-esc="s_date[0]"/></div>
+                        <div class="text-uppercase">
+                            <t t-esc="w_day['day']"/>
+                        </div>
+                        <div class="text-capitalize">
+                            <span class="d-none d-sm-block">
+                                <t t-esc="s_date[1]"/>
+&#32;</span>
+                            <span t-esc="s_date[0]"/>
+                        </div>
                     </div>
                 </t>
             </div>
@@ -172,21 +179,21 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                          <div class="bk_modal_heading mx-auto">BOOK YOUR SLOT</div>
+                            <div class="bk_modal_heading mx-auto">BOOK YOUR SLOT</div>
                             <button type="button" class="close fa fa-times ml-0" data-dismiss="modal" aria-hidden="false"/>
                         </div>
                         <div t-if="booking_status and daily_mode" class="modal-header py-2 border-0 pb-0">
-                          <!-- <div class="col-md-8"></div> -->
-                          <div class="col-12">
-                            <span class="pull-right select_bk_date" style="font-size: 16px;color: #1CBC8C;">
-                                <div class='input-group date' id='bk_datepicker'  data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
-                                    <input type="text" name="bk_date" id="bk_sel_date" data-target="#bk_datepicker" style="display: none;"/>
-                                    <a class="input-group-append" data-target="#bk_datepicker" data-toggle="datetimepicker">
+                            <!-- <div class="col-md-8"></div> -->
+                            <div class="col-12">
+                                <span class="pull-right select_bk_date" style="font-size: 16px;color: #1CBC8C;">
+                                    <div class='input-group date' id='bk_datepicker' data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
+                                        <input type="text" name="bk_date" id="bk_sel_date" data-target="#bk_datepicker" style="display: none;"/>
+                                        <a class="input-group-append" data-target="#bk_datepicker" data-toggle="datetimepicker">
                                         Select Date
-                                    </a>
-                                </div>
-                            </span>
-                          </div>
+                                        </a>
+                                    </div>
+                                </span>
+                            </div>
                         </div>
                         <div t-if="booking_status" class="modal-body  pt-0">
                             <div class="row booking_modal_footer">
@@ -203,7 +210,10 @@
                                         <t t-foreach="week_days" t-as="w_day">
                                             <t t-if="w_day['day'] == current_day">
                                                 <t t-set="s_date" t-value="w_day['date_str'].split(' ')"/>
-                                                <span id="dsply_bk_date"><t t-esc="s_date[1]"/>, <t t-esc="s_date[2]"/></span>
+                                                <span id="dsply_bk_date">
+                                                    <t t-esc="s_date[1]"/>
+,                                                    <t t-esc="s_date[2]"/>
+                                                </span>
                                             </t>
                                         </t>
                                     </span>
@@ -217,12 +227,15 @@
                                         <div class="col-md-7 col-12" style="text-align: left;padding-left: 0;">
                                             <div t-if="product.max_bk_qty > 0">
                                                 <span style="font-size: 16px;font-weight: 700;">Guest</span>
-                                                <span style="font-size: 14px;">(Maximum capacity is <t t-esc="max_bk_qty"/>)</span>
+                                                <span style="font-size: 14px;">(Maximum capacity is <t t-esc="max_bk_qty"/>
+)</span>
                                             </div>
                                             <div class="bk_qty_div">
                                                 <select t-if="product.max_bk_qty > 0" class="bk_qty_sel" name="add_qty" required="1" style="width: 100%; height: 35px;cursor: pointer;">
                                                     <t t-foreach="range(1, max_bk_qty+1)" t-as="bk_qty_optn">
-                                                        <option t-att-value="bk_qty_optn"><t t-esc="bk_qty_optn"/></option>
+                                                        <option t-att-value="bk_qty_optn">
+                                                            <t t-esc="bk_qty_optn"/>
+                                                        </option>
                                                     </t>
                                                 </select>
                                                 <input t-else="" class="bk_qty_sel" name="add_qty" type="hidden" value="1"/>
@@ -264,32 +277,32 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header py-2">
-                          <div class="bk_modal_heading mx-auto">BOOK YOUR SLOT</div>
+                            <div class="bk_modal_heading mx-auto">BOOK YOUR SLOT</div>
                             <button type="button" class="close fa fa-times ml-0" data-dismiss="modal" aria-hidden="false"/>
                         </div>
                         <div t-if="booking_status" class="modal-header py-2 border-0 pb-0">
-                          <!-- <div class="col-md-8"></div> -->
-                          <div class="col-4">
-                            <span class="pull-right select_bk_date" style="font-size: 16px;color: #1CBC8C;">
-                                <div class='input-group date' id='bk_datepicker'  data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
-                                    <input type="text" name="bk_date" id="bk_sel_date" data-target="#bk_datepicker" style="display: none;"/>
-                                    <a class="input-group-append" data-target="#bk_datepicker" data-toggle="datetimepicker">
+                            <!-- <div class="col-md-8"></div> -->
+                            <div class="col-4">
+                                <span class="pull-right select_bk_date" style="font-size: 16px;color: #1CBC8C;">
+                                    <div class='input-group date' id='bk_datepicker' data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
+                                        <input type="text" name="bk_date" id="bk_sel_date" data-target="#bk_datepicker" style="display: none;"/>
+                                        <a class="input-group-append" data-target="#bk_datepicker" data-toggle="datetimepicker">
                                         START DATE
-                                    </a>
-                                </div>
-                            </span>
-                          </div>
-                          <div class="col-4"></div>
-                          <div class="col-4">
-                            <span class="pull-right select_bk_date" style="font-size: 16px;color: #1CBC8C;">
-                                <div class='input-group date' id='bk_datepicker_out'  data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
-                                    <input type="text" name="bk_date_out" id="bk_sel_date" data-target="#bk_datepicker_out" style="display: none;"/>
-                                    <a class="input-group-append" data-target="#bk_datepicker_out" data-toggle="datetimepicker">
+                                        </a>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <span class="pull-right select_bk_date" style="font-size: 16px;color: #1CBC8C;">
+                                    <div class='input-group date' id='bk_datepicker_out' data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
+                                        <input type="text" name="bk_date_out" id="bk_sel_date" data-target="#bk_datepicker_out" style="display: none;"/>
+                                        <a class="input-group-append" data-target="#bk_datepicker_out" data-toggle="datetimepicker">
                                         END DATE
-                                    </a>
-                                </div>
-                            </span>
-                          </div>
+                                        </a>
+                                    </div>
+                                </span>
+                            </div>
                         </div>
 
                         <div t-if="booking_status" class="modal-body  pt-0">
