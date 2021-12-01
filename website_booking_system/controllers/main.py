@@ -49,8 +49,8 @@ class WebsiteSale(WebsiteSale):
             to_date = datetime.strptime(bk_date_out, '%Y-%m-%d').date()
             day_diff = (to_date - from_date).days
 
-            # day_price = product_obj.list_price / 30
-            day_price = 1
+            day_price = product_obj.list_price 
+            # day_price = 1
 
             # print('#########################$$$$$$$$$$$$$$$$$$$$',
             #       product_obj.bk_rent_mode)
