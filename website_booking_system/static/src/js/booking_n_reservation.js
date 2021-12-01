@@ -74,7 +74,7 @@ odoo.define('website_booking_system.booking_n_reservation', function(require) {
             ajax.jsonRpc("/booking/reservation/modal/update_price", 'call',{
                 'product_id' : product_id,
                 'from_date' : GetFormattedDate(startDate),
-                // 'to_date' : GetFormattedDate(endDate)
+                // 'to_date' : GetFormattedDate(endDate) //
                 'to_date' : GetFormattedDate(startDate.addDays(30))
             }).then(function (result) {
                 bk_loader.hide();
