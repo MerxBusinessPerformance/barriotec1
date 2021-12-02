@@ -194,4 +194,4 @@ class BookingConfig(models.Model):
     buffer_cache = fields.Integer("Buffer cache time after each booking")
     br_start_time = fields.Float("Break Start Time")
     br_end_time = fields.Float("Break End Time")
-    product__id = fields.Many2one("product.template", string="Bookng Product")
+    product_id = fields.Many2one("product.template", string="Bookng Product")
