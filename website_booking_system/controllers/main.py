@@ -67,7 +67,7 @@ class WebsiteSale(WebsiteSale):
             bk_slot_obj = request.env["pgmx.booking.product.plans"].browse([int(bk_plan)])
             line_values = {
                 'booking_plan_line_id' : bk_slot_obj.id,
-                'price_unit' : (day_price * day_diff) + bk_slot_obj.price,
+                'price_unit': (day_price * day_diff) + bk_slot_obj.price,
                 'booking_date' : bk_date if bk_date else None,
             }
           
