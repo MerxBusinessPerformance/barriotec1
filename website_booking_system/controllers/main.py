@@ -36,6 +36,14 @@ Days = {
 
 class WebsiteSale(WebsiteSale):
 
+    @http.route(['/booking/reservation/price_list_plus_plan'], type='json', auth="public", methods=['POST'], website=True)
+    def price_list_plus_plan(self,**post):
+        product_id = post.get('product_id',False)
+        product_obj = request.env["product.template"].browse(int(product_id));
+        return {
+            'price' : product_obj.list_price
+        }
+
     @http.route(['/shop/cart/update'], type='http', auth="public", methods=['POST'], website=True, csrf=False)
     def cart_update(self, product_id, product_template_id, add_qty=1, set_qty=0, **kw):
         res = super(WebsiteSale, self).cart_update(product_id, add_qty, set_qty, **kw)

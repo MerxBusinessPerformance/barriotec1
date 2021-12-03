@@ -83,6 +83,27 @@ odoo.define('website_booking_system.booking_n_reservation', function(require) {
 
                 bk_plan_base_price.html((result.price + PlanPrice).toFixed(2));
                 bk_total_price.html((result.price + PlanPrice).toFixed(2));
+
+                console.log("estamos")
+                ajax
+                  .jsonRpc(
+                    "/booking/reservation/price_list_plus_plan",
+                    "call",
+                    {
+                      product_id,
+                    }
+                  )
+                  .then(respuesta => {
+                    let price_list_plus_plan = 
+                        respuesta.price + PlanPrice
+                      
+                    price_list_plus_plan = parseFloat(price_list_plus_plan)
+                      .toLocaleString('en', { minimumFractionDigits: 2 })
+                    
+                    $("#total_especial").html(price_list_plus_plan)
+                  })
+                  .catch(_ => console.log("error", _))
+
             });
 
         }
