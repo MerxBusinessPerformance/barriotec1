@@ -101,6 +101,27 @@ odoo.define('website_booking_system.booking_n_reservation', function(require) {
                       .toLocaleString('en', { minimumFractionDigits: 2 })
                     
                     $("#total_especial").html(price_list_plus_plan)
+                      
+                    // Agregamos la descripcion del plan
+                    
+                    let plan_name = $(
+                      ".bk_model_plans input:checked + .bk_plan_div .d-none.d-sm-block div:first-child "
+                    ).text().trim()
+                      
+                      let $plan_descripcion = $("#booking_modal_descripcion_plan")
+                    if (plan_name)
+                    {
+                        $plan_descripcion.removeClass('d-none')
+                        $plan_descripcion.find('.texto')
+                            .html(respuesta
+                                .plans
+                                .find(x => plan_name === x.name).description)
+                    }
+                    else
+                    {
+                        $plan_descripcion.addClass('d-none')
+                    }
+                      
                   })
                   .catch(_ => console.log("error", _))
 

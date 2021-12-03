@@ -332,6 +332,13 @@ Fecha de Salida
                                         <span class="bk_total_price" t-esc="00.00" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                                     </div>
                                 </div>
+                                <div id="booking_modal_descripcion_plan" class="row d-none">
+                                    <div class="col-12 texto">
+
+                                    </div>
+                                </div>
+
+
                                 <div class="row" style="padding: 0 15px;margin-bottom: 7px;">
                                     <span class="bk_modal_err"/>
                                 </div>
@@ -344,7 +351,7 @@ Fecha de Salida
 
                                         <span class="font-bold">Total:</span>
                                         <br />
-                                        <h5 class="font-weight-bold"> $ <span id="total_especial">0,000.00</span>
+                                        <h5 class="font-weight-bold"> $                                            <span id="total_especial">0,000.00</span>
                                         </h5>
 
                                     </div>
