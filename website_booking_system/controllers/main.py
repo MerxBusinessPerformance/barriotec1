@@ -36,21 +36,29 @@ Days = {
 
 class WebsiteSale(WebsiteSale):
 
+    @http.route(['/booking/reservation/price_list_plus_plan'], type='json', auth="public", methods=['POST'], website=True)
+    def price_list_plus_plan(self,**post):
+        product_id = post.get('product_id',False)
+        product_obj = request.env["product.template"].browse(int(product_id));
+        return {
+            'price' : product_obj.list_price
+        }
+
     @http.route(['/shop/cart/update'], type='http', auth="public", methods=['POST'], website=True, csrf=False)
-    def cart_update(self, product_id, add_qty=1, set_qty=0, **kw):
+    def cart_update(self, product_id, product_template_id, add_qty=1, set_qty=0, **kw):
         res = super(WebsiteSale, self).cart_update(product_id, add_qty, set_qty, **kw)
         bk_plan = kw.get('bk_plan', False)
         bk_date = kw.get('bk_date', False)
         bk_date_out = kw.get('bk_date_out', False)
 
         if bk_plan:
-            product_obj = request.env['product.template'].browse(int(product_id))
+            product_obj = request.env['product.template'].browse(
+                int(product_template_id))
             from_date = datetime.strptime(bk_date, '%Y-%m-%d').date()
             to_date = datetime.strptime(bk_date_out, '%Y-%m-%d').date()
             day_diff = (to_date - from_date).days
 
-            # day_price = product_obj.list_price / 30
-            day_price = 1
+            day_price = product_obj.list_price / 30
 
             # print('#########################$$$$$$$$$$$$$$$$$$$$',
             #       product_obj.bk_rent_mode)
@@ -59,17 +67,10 @@ class WebsiteSale(WebsiteSale):
             bk_slot_obj = request.env["pgmx.booking.product.plans"].browse([int(bk_plan)])
             line_values = {
                 'booking_plan_line_id' : bk_slot_obj.id,
-                'price_unit' : (day_price * day_diff) + bk_slot_obj.price,
+                'price_unit': (day_price * day_diff) + bk_slot_obj.price,
                 'booking_date' : bk_date if bk_date else None,
             }
-            # else:
-            #     bk_slot_obj = request.env["booking.slot"].browse([int(bk_plan)])
-            #     line_values = {
-            #         'booking_slot_id' : bk_slot_obj.id,
-            #         'price_unit' : (day_price * day_diff) + bk_slot_obj.price,
-            #         'booking_date' : bk_date if bk_date else None,
-            #     }
-
+          
             sale_order = request.website.sale_get_order()
             order_line = sale_order.order_line.filtered(lambda l: l.product_id.id == int(product_id))
             order_line.write(line_values)

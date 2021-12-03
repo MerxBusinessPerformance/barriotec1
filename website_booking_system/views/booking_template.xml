@@ -19,7 +19,8 @@
                 <span class="pull-left" style="font-size: 16px;margin-top: 22px;font-weight: bold;">
                     Select Plan:
                 </span>
-                <span class="pull-right bk_plan_base_price" t-esc="00.00" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                <span class="pull-right bk_plan_base_price" t-esc="00.00" style="white-space: nowrap; display:none" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+
             </div>
             <div class="row col-12 bk_plans_m_div">
                 <t t-foreach="d_plans" t-as="d_plan">
@@ -33,7 +34,8 @@
                                         <t t-esc="d_plan['name']"/>
                                     </div>
                                     <div style="font-size: 18px;font-weight: 700;">
-                                        <span t-esc="d_plan['price']" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                        <span t-esc="d_plan['price']" style="white-space: nowrap; display:none" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+
                                     </div>
                                     <div t-if="bk_av_qty > 0" class="bk_plan_avl">
                                         Available
@@ -69,9 +71,9 @@
         <template id="booking_sel_period_plans">
             <div class="col-12" style="padding: 0;">
                 <span class="pull-left" style="font-size: 16px;margin-top: 22px;font-weight: bold;">
-                    Select Plan:
+                    Seleccionar plan:
                 </span>
-                <span class="pull-right bk_plan_base_price" t-esc="00.00" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                <span class="pull-right bk_plan_base_price" t-esc="00.00" style="white-space: nowrap; display:none" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
             </div>
             <div class="row col-12 bk_plans_m_div">
                 <t t-foreach="d_plans" t-as="d_plan">
@@ -84,14 +86,14 @@
                                     <div style="font-size: 20px;">
                                         <t t-esc="d_plan['name']"/>
                                     </div>
-                                    <div style="font-size: 18px;font-weight: 700;">
+                                    <div style="font-size: 18px;font-weight: 700; display:none">
                                         <span t-esc="d_plan['price']" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                                     </div>
                                     <div t-if="bk_av_qty > 0" class="bk_plan_avl">
-                                        Available
+                                        Disponible
                                     </div>
                                     <div t-if="not bk_av_qty > 0" class="bk_plan_sold">
-                                        Sold Out
+                                        No disponible
                                     </div>
                                 </div>
                                 <div class="d-block d-sm-none">
@@ -100,10 +102,10 @@
                                             <t t-esc="d_plan['name']"/>
                                         </span>
                                         <span t-if="bk_av_qty > 0" class="pull-right bk_plan_avl">
-                                            Available
+                                            Disponible
                                         </span>
                                         <span t-if="not bk_av_qty > 0" class="pull-right bk_plan_sold">
-                                            Sold Out
+                                            No disponible
                                         </span>
                                     </div>
                                     <div style="font-size: 14px;font-weight: 700;">
@@ -242,7 +244,7 @@
                                                 <input id="booking_rent_mode" type="hidden" t-att-value="daily_mode"/>
                                             </div>
                                         </div>
-                                        <div class="col-md-5 col-12 bk_total_price_div">
+                                        <div class="col-md-5 col-12 bk_total_price_div ">
                                             <span>Total: </span>
                                             <span class="bk_total_price" t-esc="00.00" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                                         </div>
@@ -251,7 +253,7 @@
                                         <span class="bk_modal_err"/>
                                     </div>
                                     <div class="row" style="padding: 0 15px;">
-                                        <span class="btn btn-primary btn-lg bk_model_booking bk-submit">Book Now</span>
+                                        <span class="btn btn-primary btn-lg bk_model_booking bk-submit">Reserva ahora 0</span>
                                     </div>
                                 </div>
                             </div>
@@ -293,12 +295,12 @@
                                 </span>
                             </div>
                             <div class="col-4"></div>
-                            <div class="col-4" style="display:none">
+                            <div class="col-4">
                                 <span class="pull-right select_bk_date" style="font-size: 16px;color: #1CBC8C;">
                                     <div class='input-group date' id='bk_datepicker_out' data-target-input="nearest" t-att-data-bk_end_date="end_date" t-att-data-bk_default_date="default_date" t-att-data-w_c_days="w_closed_days">
                                         <input type="text" name="bk_date_out" id="bk_sel_date" data-target="#bk_datepicker_out" style="display: none;"/>
                                         <a class="input-group-append" data-target="#bk_datepicker_out" data-toggle="datetimepicker">
-                                        END DATE
+Fecha de Salida
                                         </a>
                                     </div>
                                 </span>
@@ -325,7 +327,7 @@
                                             <input class="bk_qty_sel" name="add_qty" type="hidden" value="1"/>
                                         </div>
                                     </div>
-                                    <div class="col-md-5 col-12 bk_total_price_div">
+                                    <div class="col-md-5 col-12 bk_total_price_div" style="display:none">
                                         <span>Total: </span>
                                         <span class="bk_total_price" t-esc="00.00" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                                     </div>
@@ -334,8 +336,21 @@
                                     <span class="bk_modal_err"/>
                                 </div>
                                 <div class="row" style="padding: 0 15px;">
-                                    <span class="btn btn-primary btn-lg bk_model_booking bk-submit">Book Now</span>
+
+                                    <div class="col-12 col-md-6">
+                                        <span class="btn btn-primary btn-lg bk_model_booking bk-submit">Reserva ahora</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 text-left text-md-right">
+
+                                        <span class="font-bold">Total:</span>
+                                        <br />
+                                        <h5 class="font-weight-bold"> $ <span id="total_especial">0,000.00</span>
+                                        </h5>
+
+                                    </div>
+
                                 </div>
+
                             </div>
                         </div>
                         <div t-else="" class="modal-footer">
@@ -353,13 +368,13 @@
             </div>
         </template>
 
-        <!-- Book Now button on Booking product page -->
+        <!-- Reserva ahora 2 button on Booking product page -->
         <template id="booking_and_reservation_product" inherit_id="website_sale.product">
             <xpath expr="//a[@id='add_to_cart']" position="attributes">
                 <attribute name="t-if">not product.is_booking_type</attribute>
             </xpath>
             <xpath expr="//a[@id='add_to_cart']" position="after">
-                <a t-if="product.is_booking_type" id="booking_and_reservation" class="btn btn-primary btn-lg mt8" href="#">Book Now</a>
+                <a t-if="product.is_booking_type" id="booking_and_reservation" class="btn btn-primary btn-lg mt8" href="#">Reserva ahora </a>
                 <div t-if="product.is_booking_type" id="bk_n_res_loader" style="display:none;"/>
                 <div id="booking_modal" t-att-data-res_id="product.id"/>
             </xpath>
