@@ -23,12 +23,12 @@ odoo.define('website_booking_system.booking_n_reservation', function(require) {
     {
         
 
-        // FUNCION PARA AGREGAR DIAS
-        Date.prototype.addDays = function (days) {
-          var date = new Date(this.valueOf())
-          date.setDate(date.getDate() + days)
-          return date
-        }
+        // // FUNCION PARA AGREGAR DIAS
+        // Date.prototype.addDays = function (days) {
+        //   var date = new Date(this.valueOf())
+        //   date.setDate(date.getDate() + days)
+        //   return date
+        // }
 
         var startDate = new Date();
         var endDate = new Date();
@@ -74,8 +74,8 @@ odoo.define('website_booking_system.booking_n_reservation', function(require) {
             ajax.jsonRpc("/booking/reservation/modal/update_price", 'call',{
                 'product_id' : product_id,
                 'from_date' : GetFormattedDate(startDate),
-                // 'to_date' : GetFormattedDate(endDate)
-                'to_date' : GetFormattedDate(startDate.addDays(30))
+                'to_date' : GetFormattedDate(endDate)
+                // 'to_date' : GetFormattedDate(startDate.addDays(30))
             }).then(function (result) {
                 bk_loader.hide();
                 var bk_plan_base_price = $('#booking_modal').find(".bk_plan_base_price .oe_currency_value");
