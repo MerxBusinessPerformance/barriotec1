@@ -23,12 +23,12 @@ odoo.define('website_booking_system.booking_n_reservation', function(require) {
     {
         
 
-        // FUNCION PARA AGREGAR DIAS
-        Date.prototype.addDays = function (days) {
-          var date = new Date(this.valueOf())
-          date.setDate(date.getDate() + days)
-          return date
-        }
+        // // FUNCION PARA AGREGAR DIAS
+        // Date.prototype.addDays = function (days) {
+        //   var date = new Date(this.valueOf())
+        //   date.setDate(date.getDate() + days)
+        //   return date
+        // }
 
         var startDate = new Date();
         var endDate = new Date();
@@ -74,8 +74,8 @@ odoo.define('website_booking_system.booking_n_reservation', function(require) {
             ajax.jsonRpc("/booking/reservation/modal/update_price", 'call',{
                 'product_id' : product_id,
                 'from_date' : GetFormattedDate(startDate),
-                // 'to_date' : GetFormattedDate(endDate) //
-                'to_date' : GetFormattedDate(startDate.addDays(30))
+                'to_date' : GetFormattedDate(endDate)
+                // 'to_date' : GetFormattedDate(startDate.addDays(30))
             }).then(function (result) {
                 bk_loader.hide();
                 var bk_plan_base_price = $('#booking_modal').find(".bk_plan_base_price .oe_currency_value");
@@ -83,6 +83,48 @@ odoo.define('website_booking_system.booking_n_reservation', function(require) {
 
                 bk_plan_base_price.html((result.price + PlanPrice).toFixed(2));
                 bk_total_price.html((result.price + PlanPrice).toFixed(2));
+
+                console.log("estamos")
+                ajax
+                  .jsonRpc(
+                    "/booking/reservation/price_list_plus_plan",
+                    "call",
+                    {
+                      product_id,
+                    }
+                  )
+                  .then(respuesta => {
+                    let price_list_plus_plan = 
+                        respuesta.price + PlanPrice
+                      
+                    price_list_plus_plan = parseFloat(price_list_plus_plan)
+                      .toLocaleString('en', { minimumFractionDigits: 2 })
+                    
+                    $("#total_especial").html(price_list_plus_plan)
+                      
+                    // Agregamos la descripcion del plan
+                    
+                    let plan_name = $(
+                      ".bk_model_plans input:checked + .bk_plan_div .d-none.d-sm-block div:first-child "
+                    ).text().trim()
+                      
+                      let $plan_descripcion = $("#booking_modal_descripcion_plan")
+                    if (plan_name)
+                    {
+                        $plan_descripcion.removeClass('d-none')
+                        $plan_descripcion.find('.texto')
+                            .html(respuesta
+                                .plans
+                                .find(x => plan_name === x.name).description)
+                    }
+                    else
+                    {
+                        $plan_descripcion.addClass('d-none')
+                    }
+                      
+                  })
+                  .catch(_ => console.log("error", _))
+
             });
 
         }

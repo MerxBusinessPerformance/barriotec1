@@ -1,6 +1,21 @@
 /* Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) */
 /* See LICENSE file for full copyright and licensing details. */
 /* @License       : https://store.webkul.com/license.html */
+
+/* CAMPOS OCULTOS */
+
+.oe_cart .text-center.td-qty,
+.oe_cart .text-center.td-price,
+.card.js_cart_summary,
+.toggle_summary,
+.toggle_summary_div,
+[data-oe-expression="line.booking_plan_line_id.price"],
+.bk_cart_plan [data-oe-type="monetary"], 
+.oe_cart table {
+  display: none !important;
+  /* background-color: red !important; */
+}
+
 @media (min-width: 768px){
     .modal-dialog {
         max-width: 600px;
