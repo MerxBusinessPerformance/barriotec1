@@ -4,14 +4,15 @@
 
 /* CAMPOS OCULTOS */
 
-.oe_cart .text-center.td-qty, 
-.oe_cart .text-center.td-price, 
-.card.js_cart_summary, 
-.toggle_summary, 
-.toggle_summary_div
-[data-oe-expression="line.booking_plan_line_id.price"]
-{
-    display: none !important;
+.oe_cart .text-center.td-qty,
+.oe_cart .text-center.td-price,
+.card.js_cart_summary,
+.toggle_summary,
+.toggle_summary_div [data-oe-expression="line.booking_plan_line_id.price"],
+.bk_cart_plan [data-oe-type="monetary"], 
+.oe_cart table {
+  display: none !important;
+  /* background-color: red !important; */
 }
 
 @media (min-width: 768px){
