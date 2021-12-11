@@ -437,28 +437,30 @@
 
 
                             </div>
-                            <div class="col-4"></div>
-                            <div class="col-4">
-                                <span class="pull-right select_bk_date"
-                                    style="font-size: 16px;color: #1CBC8C;">
-                                    <div class='input-group date'
-                                        id='bk_datepicker_out'
-                                        data-target-input="nearest"
-                                        t-att-data-bk_end_date="end_date"
-                                        t-att-data-bk_default_date="default_date"
-                                        t-att-data-w_c_days="w_closed_days">
-                                        <input type="text"
-                                            name="bk_date_out"
-                                            id="bk_sel_date"
-                                            data-target="#bk_datepicker_out"
-                                            style="display: none;" />
-                                        <a class="input-group-append"
-                                            data-target="#bk_datepicker_out"
-                                            data-toggle="datetimepicker">
-Fecha de Salida
-                                        </a>
+
+                            <div class="col-6">
+
+                                <div class='input-group date'
+                                    id='bk_datepicker_out'
+                                    t-att-data-bk_end_date="end_date"
+                                    t-att-data-bk_default_date="default_date"
+                                    t-att-data-w_c_days="w_closed_days">
+
+                                    <div class="input-group-prepend date">
+                                        <span class="input-group-text"
+                                            id="basic-addon1">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
                                     </div>
-                                </span>
+
+
+                                    <input type="text"
+                                        name="bk_date_out"
+                                        id="bk_sel_date_out"
+                                        class="form-control date-picker"
+                                        placeholder="Salida" />
+
+                                </div>
                             </div>
                         </div>
 

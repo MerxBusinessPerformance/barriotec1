@@ -138,8 +138,6 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
           bk_loader.hide()
           var $modal = $(modal)
 
-          console.log(modal)
-
           $modal
             .appendTo(appdiv)
             .modal("show")
@@ -147,8 +145,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
               $(this).remove()
             })
 
-          $(function () {
-            $("#bk_sel_date").datepicker({
+          let accion = id => {
+            $(id).datepicker({
               dateFormat: "yy-mm-dd",
               format: "YYYY-MM-DD",
               changeMonth: true,
@@ -183,7 +181,10 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
                     "#ui-datepicker-div .ui-datepicker-year :selected"
                   ).val()
                   $(this)
-                    .datepicker("setDate", new Date(year, month, 1))
+                    .datepicker(
+                      "setDate",
+                      new Date(year, month, new Date().getDate())
+                    )
                     .trigger("change")
 
                   $(".date-picker").focusout() //Added to remove focus from datepicker input box on selecting date
@@ -198,21 +199,30 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
                     datestr.length
                   )
                   let month = datestr.substring(0, 2)
+
                   $(this).datepicker(
                     "option",
                     "defaultDate",
                     new Date(year, month - 1, 1)
                   )
-                  $(this).datepicker("setDate", new Date(year, month - 1, 1))
+                  $(this).datepicker(
+                    "setDate",
+                    new Date(year, month - 1, new Date().getDate())
+                  )
                   $(".ui-datepicker-calendar").hide()
                 }
               },
             })
+          }
+
+          $(function () {
+            accion("#bk_sel_date")
+            accion("#bk_sel_date_out")
           })
 
           // Booking Date Selection Picker
           //   $(function () {
-          //     $("#bk_datepicker").datetimepicker({
+          //     $("#bk_datepicker_out").datetimepicker({
           //       format: "YYYY-MM-DD",
           //       icons: {
           //         date: "fa fa-calendar",
@@ -227,25 +237,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
           //     })
           //   })
 
-          // Booking Date Selection Picker
-          $(function () {
-            $("#bk_datepicker_out").datetimepicker({
-              format: "YYYY-MM-DD",
-              icons: {
-                date: "fa fa-calendar",
-                next: "fa fa-chevron-right",
-                previous: "fa fa-chevron-left",
-              },
-              minDate: $("#bk_datepicker").data("bk_default_date"),
-              maxDate: $("#bk_datepicker").data("bk_end_date"),
-              daysOfWeekDisabled: get_w_closed_days(
-                $("#bk_datepicker").data("w_c_days")
-              ),
-            })
-          })
-
           $("#bk_datepicker").on("change.datetimepicker", function (e) {
-            console.log("Modificando entrada", $(this).find("input").val())
+       
             startDate = new Date($(this).find("input").val())
             var booking_modal = $("#booking_modal")
             booking_modal
@@ -256,8 +249,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
           })
 
           $("#bk_datepicker_out").on("change.datetimepicker", function (e) {
-            var date = new Date(e.date)
-            var o_date = new Date(e.oldDate)
+            // var date = new Date(e.date)
+            // var o_date = new Date(e.oldDate)
 
             var booking_modal = $("#booking_modal")
             booking_modal
@@ -265,10 +258,10 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
               .find("input[name='bk_plan']")
               .prop("checked", false)
 
-            if (GetFormattedDate(date) != GetFormattedDate(o_date)) {
-              endDate = date
+            // if (GetFormattedDate(date) != GetFormattedDate(o_date)) {
+              endDate = new Date($(this).find("input").val())
               update_total_price()
-            }
+            // }
           })
 
           // $('#bk_datepicker').on("change.datetimepicker", function (e) {
