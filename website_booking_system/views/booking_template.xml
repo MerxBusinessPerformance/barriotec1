@@ -403,16 +403,7 @@
                         </div>
                         <div t-if="booking_status"
                             class="modal-header py-2 border-0 pb-0">
-                            <!-- <div class="col-md-8"></div> -->
-
-
-
-
                             <div class="col-6">
-
-
-
-
                                 <!-- data-target-input="nearest" -->
                                 <div class='input-group '
                                     id='bk_datepicker'
@@ -429,19 +420,11 @@
                                         type="text"
                                         class="form-control date-picker"
                                         id="bk_sel_date"
-                                        placeholder="Entrada" 
-                                        readonly="readonly"
-                                        />
-
+                                        placeholder="Entrada"
+                                        readonly="readonly" />
                                 </div>
-
-
-
-
                             </div>
-
                             <div class="col-6">
-
                                 <div class='input-group date'
                                     id='bk_datepicker_out'
                                     t-att-data-bk_end_date="end_date"
@@ -454,16 +437,12 @@
                                             <i class="fa fa-calendar"></i>
                                         </span>
                                     </div>
-
-
                                     <input type="text"
                                         name="bk_date_out"
                                         id="bk_sel_date_out"
                                         class="form-control date-picker"
-                                        placeholder="Salida" 
-                                        readonly="readonly"
-                                        />
-
+                                        placeholder="Salida"
+                                        readonly="readonly" />
                                 </div>
                             </div>
                         </div>
@@ -527,7 +506,7 @@
                                     </div>
                                     <div class="col-12 col-md-6 text-left text-md-right">
 
-                                        <span class="font-bold">Total:</span>
+                                        <span class="font-bold">Total mensual:</span>
                                         <br />
                                         <h5 class="font-weight-bold"> $                                            <span id="total_especial">0,000.00</span>
                                         </h5>
