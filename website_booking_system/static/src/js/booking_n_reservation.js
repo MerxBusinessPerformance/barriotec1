@@ -19,14 +19,43 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
     sat: 6,
   }
 
-  $(document).ready(function () {
-    // // FUNCION PARA AGREGAR DIAS
-    // Date.prototype.addDays = function (days) {
-    //   var date = new Date(this.valueOf())
-    //   date.setDate(date.getDate() + days)
-    //   return date
-    // }
+  // Traducción de calendario
+  $.datepicker.regional["es"] = {
+    //  https://stackoverflow.com/questions/1452681/jquery-datepicker-localization
+    closeText: "Seleccionar",
+    currentText: "Hoy",
+    monthNames: [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ],
+    monthNamesShort: [
+      "Ene",
+      "Feb",
+      "Mar",
+      "Abr",
+      "May",
+      "Jun",
+      "Jul",
+      "Ago",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dic",
+    ],
+  }
+  $.datepicker.setDefaults($.datepicker.regional["es"])
 
+  $(document).ready(function () {
     var startDate = new Date()
     var endDate = new Date()
     var PlanPrice
@@ -52,8 +81,7 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
       return num
     }
 
-      function GetFormattedDate(date)
-      {
+    function GetFormattedDate(date) {
       var month = GetFormate(date.getMonth() + 1)
       var day = GetFormate(date.getDate())
       var year = date.getFullYear()
@@ -179,7 +207,7 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
                   var year = $(
                     "#ui-datepicker-div .ui-datepicker-year :selected"
                   ).val()
-                    $(this)
+                  $(this)
                     .datepicker(
                       "setDate",
                       new Date(year, month, new Date().getDate())
@@ -237,7 +265,6 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
           //   })
 
           $("#bk_datepicker").on("change.datetimepicker", function (e) {
-       
             startDate = new Date($(this).find("input").val())
             var booking_modal = $("#booking_modal")
             booking_modal
@@ -258,11 +285,10 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
               .prop("checked", false)
 
             // if (GetFormattedDate(date) != GetFormattedDate(o_date)) {
-              endDate = new Date($(this).find("input").val())
-              update_total_price()
+            endDate = new Date($(this).find("input").val())
+            update_total_price()
             // }
           })
-
         })
     })
 
