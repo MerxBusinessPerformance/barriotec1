@@ -291,17 +291,17 @@ class BookingReservation(http.Controller):
         product_obj = request.env["product.template"].browse(product_id)
         from_date = datetime.strptime(str_from_date, '%d/%m/%Y').date()
         to_date = datetime.strptime(str_to_date, '%d/%m/%Y').date()
-        day_diff = (to_date - from_date).days
+        month_diff = diferencia_en_meses(from_date, to_date)
 
-        if day_diff <= 0:
+        if month_diff <= 0:
             return {
                 'price': 0
             }
 
-        day_price = product_obj.list_price / 30
+        day_price = product_obj.list_price
 
         return {
-            'price': (day_price * day_diff) + plan_price
+            'price': day_price * (month_diff + plan_price)
         }
 
     @http.route(['/booking/reservation/cart/validate'], type='json', auth="public", methods=['POST'], website=True)
