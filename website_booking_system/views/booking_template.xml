@@ -404,27 +404,38 @@
                         <div t-if="booking_status"
                             class="modal-header py-2 border-0 pb-0">
                             <!-- <div class="col-md-8"></div> -->
-                            <div class="col-4">
-                                <span class="pull-right select_bk_date"
-                                    style="font-size: 16px;color: #1CBC8C;">
-                                    <div class='input-group date'
-                                        id='bk_datepicker'
-                                        data-target-input="nearest"
-                                        t-att-data-bk_end_date="end_date"
-                                        t-att-data-bk_default_date="default_date"
-                                        t-att-data-w_c_days="w_closed_days">
-                                        <input type="text"
-                                            name="bk_date"
-                                            id="bk_sel_date"
-                                            data-target="#bk_datepicker"
-                                            style="display: none;" />
-                                        <a class="input-group-append"
-                                            data-target="#bk_datepicker"
-                                            data-toggle="datetimepicker">
-                                        Seleccionar fecha de entrada
-                                        </a>
+
+
+
+
+                            <div class="col-6">
+
+
+
+
+                                <!-- data-target-input="nearest" -->
+                                <div class='input-group '
+                                    id='bk_datepicker'
+                                    t-att-data-bk_end_date="end_date"
+                                    t-att-data-bk_default_date="default_date"
+                                    t-att-data-w_c_days="w_closed_days">
+                                    <div class="input-group-prepend date">
+                                        <span class="input-group-text"
+                                            id="basic-addon1">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
                                     </div>
-                                </span>
+                                    <input name="bk_date"
+                                        type="text"
+                                        class="form-control date-picker"
+                                        id="bk_sel_date"
+                                        placeholder="Entrada" />
+
+                                </div>
+
+
+
+
                             </div>
                             <div class="col-4"></div>
                             <div class="col-4">

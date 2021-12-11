@@ -67,6 +67,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
       var appdiv = $("#booking_modal")
       var product_id = parseInt(appdiv.data("res_id"), 10)
       var bk_loader = $("#bk_n_res_loader")
+
+      console.log("update_total_price", { startDate, endDate })
       bk_loader.show()
       ajax
         .jsonRpc("/booking/reservation/modal/update_price", "call", {
@@ -84,8 +86,6 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
 
           bk_plan_base_price.html((result.price + PlanPrice).toFixed(2))
           bk_total_price.html((result.price + PlanPrice).toFixed(2))
-
-          console.log("estamos")
           ajax
             .jsonRpc("/booking/reservation/price_list_plus_plan", "call", {
               product_id,
@@ -147,12 +147,13 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
               $(this).remove()
             })
 
-          console.log($("#booking_rent_mode").val())
-
-          // Booking Date Selection Picker
           $(function () {
-            $("#bk_datepicker").datetimepicker({
+            $("#bk_sel_date").datepicker({
+              dateFormat: "yy-mm-dd",
               format: "YYYY-MM-DD",
+              changeMonth: true,
+              changeYear: true,
+              showButtonPanel: true,
               icons: {
                 date: "fa fa-calendar",
                 next: "fa fa-chevron-right",
@@ -163,8 +164,68 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
               daysOfWeekDisabled: get_w_closed_days(
                 $("#bk_datepicker").data("w_c_days")
               ),
+              onClose: function (dateText, inst) {
+                function isDonePressed() {
+                  return (
+                    $("#ui-datepicker-div")
+                      .html()
+                      .indexOf(
+                        "ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover"
+                      ) > -1
+                  )
+                }
+
+                if (isDonePressed()) {
+                  var month = $(
+                    "#ui-datepicker-div .ui-datepicker-month :selected"
+                  ).val()
+                  var year = $(
+                    "#ui-datepicker-div .ui-datepicker-year :selected"
+                  ).val()
+                  $(this)
+                    .datepicker("setDate", new Date(year, month, 1))
+                    .trigger("change")
+
+                  $(".date-picker").focusout() //Added to remove focus from datepicker input box on selecting date
+                }
+              },
+              beforeShow: function (input, inst) {
+                inst.dpDiv.addClass("month_year_datepicker")
+                let datestr
+                if ((datestr = $(this).val()).length > 0) {
+                  let year = datestr.substring(
+                    datestr.length - 4,
+                    datestr.length
+                  )
+                  let month = datestr.substring(0, 2)
+                  $(this).datepicker(
+                    "option",
+                    "defaultDate",
+                    new Date(year, month - 1, 1)
+                  )
+                  $(this).datepicker("setDate", new Date(year, month - 1, 1))
+                  $(".ui-datepicker-calendar").hide()
+                }
+              },
             })
           })
+
+          // Booking Date Selection Picker
+          //   $(function () {
+          //     $("#bk_datepicker").datetimepicker({
+          //       format: "YYYY-MM-DD",
+          //       icons: {
+          //         date: "fa fa-calendar",
+          //         next: "fa fa-chevron-right",
+          //         previous: "fa fa-chevron-left",
+          //       },
+          //       minDate: $("#bk_datepicker").data("bk_default_date"),
+          //       maxDate: $("#bk_datepicker").data("bk_end_date"),
+          //       daysOfWeekDisabled: get_w_closed_days(
+          //         $("#bk_datepicker").data("w_c_days")
+          //       ),
+          //     })
+          //   })
 
           // Booking Date Selection Picker
           $(function () {
@@ -184,7 +245,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
           })
 
           $("#bk_datepicker").on("change.datetimepicker", function (e) {
-            startDate = new Date(e.date)
+            console.log("Modificando entrada", $(this).find("input").val())
+            startDate = new Date($(this).find("input").val())
             var booking_modal = $("#booking_modal")
             booking_modal
               .find(".bk_model_plans")
