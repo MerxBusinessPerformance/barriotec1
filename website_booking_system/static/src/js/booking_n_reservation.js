@@ -59,6 +59,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
     var startDate = new Date()
     var endDate = new Date()
     var PlanPrice
+    //  Costo de plan
+    let base_price = 0
 
     var reset_total_price = function () {
       var bk_total_price = $("#booking_modal").find(
@@ -88,9 +90,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
       return day + "/" + month + "/" + year
     }
 
-    var update_total_price = function (extra) {
-      if (typeof extra == "undefined") extra = 0
-
+    var update_total_price = function () {
+      let extra = base_price
       PlanPrice = extra
 
       var appdiv = $("#booking_modal")
@@ -264,10 +265,10 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
             )
 
             var booking_modal = $("#booking_modal")
-            booking_modal
-              .find(".bk_model_plans")
-              .find("input[name='bk_plan']")
-              .prop("checked", false)
+            // booking_modal
+            //   .find(".bk_model_plans")
+            //   .find("input[name='bk_plan']")
+            //   .prop("checked", false)
             update_total_price()
           })
 
@@ -276,10 +277,10 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
             // var o_date = new Date(e.oldDate)
 
             var booking_modal = $("#booking_modal")
-            booking_modal
-              .find(".bk_model_plans")
-              .find("input[name='bk_plan']")
-              .prop("checked", false)
+            // booking_modal
+            //   .find(".bk_model_plans")
+            //   .find("input[name='bk_plan']")
+            //   .prop("checked", false)
 
             // if (GetFormattedDate(date) != GetFormattedDate(o_date)) {
             endDate = new Date($(this).find("input").val())
@@ -431,13 +432,13 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
     // Booking Slot Plan Selection
     $("#booking_modal").on("click", "input[name='bk_plan']", function (event) {
       var bk_plan_div = $(this).closest("label").find(".bk_plan_div")
-      var base_price = parseInt(bk_plan_div.data("plan_price"), 10)
+      base_price = parseInt(bk_plan_div.data("plan_price"), 10)
 
       if (isNaN(base_price)) {
         base_price = 0.0
       }
 
-      update_total_price(base_price)
+      update_total_price()
       // var booking_modal = $('#booking_modal');
       // var bk_plan_div = $(this).closest('label').find('.bk_plan_div');
       // var bk_plan_base_price = $('#booking_modal').find(".bk_plan_base_price .oe_currency_value");
