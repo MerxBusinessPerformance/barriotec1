@@ -429,7 +429,9 @@
                                         type="text"
                                         class="form-control date-picker"
                                         id="bk_sel_date"
-                                        placeholder="Entrada" />
+                                        placeholder="Entrada" 
+                                        readonly="readonly"
+                                        />
 
                                 </div>
 
@@ -458,7 +460,9 @@
                                         name="bk_date_out"
                                         id="bk_sel_date_out"
                                         class="form-control date-picker"
-                                        placeholder="Salida" />
+                                        placeholder="Salida" 
+                                        readonly="readonly"
+                                        />
 
                                 </div>
                             </div>

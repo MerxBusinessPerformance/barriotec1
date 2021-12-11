@@ -52,7 +52,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
       return num
     }
 
-    function GetFormattedDate(date) {
+      function GetFormattedDate(date)
+      {
       var month = GetFormate(date.getMonth() + 1)
       var day = GetFormate(date.getDate())
       var year = date.getFullYear()
@@ -68,14 +69,12 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
       var product_id = parseInt(appdiv.data("res_id"), 10)
       var bk_loader = $("#bk_n_res_loader")
 
-      console.log("update_total_price", { startDate, endDate })
       bk_loader.show()
       ajax
         .jsonRpc("/booking/reservation/modal/update_price", "call", {
           product_id: product_id,
           from_date: GetFormattedDate(startDate),
           to_date: GetFormattedDate(endDate),
-          // 'to_date' : GetFormattedDate(startDate.addDays(30))
         })
         .then(function (result) {
           bk_loader.hide()
@@ -180,7 +179,7 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
                   var year = $(
                     "#ui-datepicker-div .ui-datepicker-year :selected"
                   ).val()
-                  $(this)
+                    $(this)
                     .datepicker(
                       "setDate",
                       new Date(year, month, new Date().getDate())
@@ -192,8 +191,8 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
               },
               beforeShow: function (input, inst) {
                 inst.dpDiv.addClass("month_year_datepicker")
-                let datestr
-                if ((datestr = $(this).val()).length > 0) {
+                let datestr = $(this).val()
+                if (datestr.length < 1) {
                   let year = datestr.substring(
                     datestr.length - 4,
                     datestr.length
@@ -203,7 +202,7 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
                   $(this).datepicker(
                     "option",
                     "defaultDate",
-                    new Date(year, month - 1, 1)
+                    new Date(year, month - 1, new Date().getDate())
                   )
                   $(this).datepicker(
                     "setDate",
@@ -264,42 +263,6 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
             // }
           })
 
-          // $('#bk_datepicker').on("change.datetimepicker", function (e) {
-          // // $('#bk_datepicker').on("dp.change", function (e) {
-          //     var date = new Date(e.date);
-          //     var o_date = new Date(e.oldDate);
-          //     function GetFormate(num){
-          //         if(num<10)
-          //         {
-          //             return '0'+num;
-          //         }
-          //         return num
-          //     }
-          //     function GetFormattedDate(date) {
-          //         var month = GetFormate(date .getMonth() + 1);
-          //         var day = GetFormate(date .getDate());
-          //         var year = date .getFullYear();
-          //         return day + "/" + month + "/" + year;
-          //     }
-          //     if(GetFormattedDate(date) != GetFormattedDate(o_date)){
-          //         bk_loader.show();
-          //         ajax.jsonRpc("/booking/reservation/modal/update", 'call',{
-          //             'product_id' : product_id,
-          //             'new_date' : GetFormattedDate(date),
-          //         })
-          //         .then(function (result) {
-          //             bk_loader.hide();
-          //             if((date.getMonth() != o_date.getMonth()) || (date.getFullYear() != o_date.getFullYear())){
-          //                 var date_str = date.toUTCString();
-          //                 date_str = date_str.split(' ').slice(2,4)
-          //                 document.getElementById("dsply_bk_date").innerHTML = date_str.join(", ");
-          //             }
-          //             var bk_slots_main_div = appdiv.find('.bk_slots_main_div');
-          //             reset_total_price();
-          //             bk_slots_main_div.html(result);
-          //         });
-          //     }
-          // });
         })
     })
 

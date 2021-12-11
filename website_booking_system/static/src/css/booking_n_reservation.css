@@ -16,6 +16,12 @@
   /* background-color: red !important; */
 }
 
+input[readonly], input[readonly="readonly"]
+{
+    background-color:white !important;
+    color:rgb(75, 75, 75);
+}
+
 
 .ui-datepicker-calendar {
     display: none;
