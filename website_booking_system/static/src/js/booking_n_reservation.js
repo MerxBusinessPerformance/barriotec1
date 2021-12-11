@@ -172,8 +172,48 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
               $(this).remove()
             })
 
-          let accion = id => {
-            $(id).datepicker({
+          function datepicker_onClose(dateText, inst) {
+            function isDonePressed() {
+              return (
+                $("#ui-datepicker-div")
+                  .html()
+                  .indexOf(
+                    "ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover"
+                  ) > -1
+              )
+            }
+
+            if (isDonePressed()) {
+              var month = $(
+                "#ui-datepicker-div .ui-datepicker-month :selected"
+              ).val()
+              var year = $(
+                "#ui-datepicker-div .ui-datepicker-year :selected"
+              ).val()
+              $(this)
+                .datepicker(
+                  "setDate",
+                  new Date(year, month, new Date().getDate())
+                )
+                .trigger("change")
+
+              $(".date-picker").focusout() //Added to remove focus from datepicker input box on selecting date
+            }
+          }
+          $(function () {
+            function datepicker_beforeShow(input, inst) {
+              inst.dpDiv.addClass("month_year_datepicker")
+              let datestr = $(this).val()
+              if (datestr.length < 1) {
+                let year = datestr.substring(datestr.length - 4, datestr.length)
+                let month = datestr.substring(0, 2)
+                let day = new Date().getDate()
+
+                $(this).datepicker("setDate", new Date(year, month - 1, day))
+                $(".ui-datepicker-calendar").hide()
+              }
+            }
+            $("#bk_sel_date").datepicker({
               dateFormat: "yy-mm-dd",
               format: "YYYY-MM-DD",
               changeMonth: true,
@@ -189,83 +229,40 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
               daysOfWeekDisabled: get_w_closed_days(
                 $("#bk_datepicker").data("w_c_days")
               ),
-              onClose: function (dateText, inst) {
-                function isDonePressed() {
-                  return (
-                    $("#ui-datepicker-div")
-                      .html()
-                      .indexOf(
-                        "ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover"
-                      ) > -1
-                  )
-                }
-
-                if (isDonePressed()) {
-                  var month = $(
-                    "#ui-datepicker-div .ui-datepicker-month :selected"
-                  ).val()
-                  var year = $(
-                    "#ui-datepicker-div .ui-datepicker-year :selected"
-                  ).val()
-                  $(this)
-                    .datepicker(
-                      "setDate",
-                      new Date(year, month, new Date().getDate())
-                    )
-                    .trigger("change")
-
-                  $(".date-picker").focusout() //Added to remove focus from datepicker input box on selecting date
-                }
-              },
-              beforeShow: function (input, inst) {
-                inst.dpDiv.addClass("month_year_datepicker")
-                let datestr = $(this).val()
-                if (datestr.length < 1) {
-                  let year = datestr.substring(
-                    datestr.length - 4,
-                    datestr.length
-                  )
-                  let month = datestr.substring(0, 2)
-
-                  $(this).datepicker(
-                    "option",
-                    "defaultDate",
-                    new Date(year, month - 1, new Date().getDate())
-                  )
-                  $(this).datepicker(
-                    "setDate",
-                    new Date(year, month - 1, new Date().getDate())
-                  )
-                  $(".ui-datepicker-calendar").hide()
-                }
-              },
+              onClose: datepicker_onClose,
+              beforeShow: datepicker_beforeShow,
             })
-          }
 
-          $(function () {
-            accion("#bk_sel_date")
-            accion("#bk_sel_date_out")
+            $("#bk_sel_date_out").datepicker({
+              dateFormat: "yy-mm-dd",
+              format: "YYYY-MM-DD",
+              changeMonth: true,
+              changeYear: true,
+              showButtonPanel: true,
+              icons: {
+                date: "fa fa-calendar",
+                next: "fa fa-chevron-right",
+                previous: "fa fa-chevron-left",
+              },
+              minDate: startDate,
+              maxDate: $("#bk_datepicker").data("bk_end_date"),
+              daysOfWeekDisabled: get_w_closed_days(
+                $("#bk_datepicker").data("w_c_days")
+              ),
+              onClose: datepicker_onClose,
+              beforeShow: datepicker_beforeShow,
+            })
           })
-
-          // Booking Date Selection Picker
-          //   $(function () {
-          //     $("#bk_datepicker_out").datetimepicker({
-          //       format: "YYYY-MM-DD",
-          //       icons: {
-          //         date: "fa fa-calendar",
-          //         next: "fa fa-chevron-right",
-          //         previous: "fa fa-chevron-left",
-          //       },
-          //       minDate: $("#bk_datepicker").data("bk_default_date"),
-          //       maxDate: $("#bk_datepicker").data("bk_end_date"),
-          //       daysOfWeekDisabled: get_w_closed_days(
-          //         $("#bk_datepicker").data("w_c_days")
-          //       ),
-          //     })
-          //   })
 
           $("#bk_datepicker").on("change.datetimepicker", function (e) {
             startDate = new Date($(this).find("input").val())
+            //Actualizar fecha minima
+            $("#bk_sel_date_out").datepicker(
+              "option",
+              "minDate",
+              new Date(startDate.setMonth(startDate.getMonth() + 1))
+            )
+
             var booking_modal = $("#booking_modal")
             booking_modal
               .find(".bk_model_plans")
