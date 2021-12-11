@@ -35,6 +35,10 @@ Days = {
 }
 
 
+def diferencia_en_meses(d2, d1):
+    return (d1.year - d2.year) * 12 + d1.month - d2.month
+
+
 class WebsiteSale(WebsiteSale):
 
     @http.route(['/booking/reservation/price_list_plus_plan'], type='json', auth="public", methods=['POST'], website=True)
@@ -42,14 +46,14 @@ class WebsiteSale(WebsiteSale):
         product_id = post.get('product_id', False)
         product_obj = request.env["product.template"].browse(int(product_id))
 
-        resp = { 
-            
+        resp = {
+
             'price': product_obj.list_price,
             'plans': [{
                 'name': x.plan_id.name,
                 'description': x.plan_id.discription
             } for x in product_obj.booking_plan_ids]
-        
+
         }
 
         return resp
@@ -67,20 +71,18 @@ class WebsiteSale(WebsiteSale):
                 int(product_template_id))
             from_date = datetime.strptime(bk_date, '%Y-%m-%d').date()
             to_date = datetime.strptime(bk_date_out, '%Y-%m-%d').date()
-            day_diff = (to_date - from_date).days
 
-            day_price = product_obj.list_price / 30
-
-            # print('#########################$$$$$$$$$$$$$$$$$$$$',
-            #       product_obj.bk_rent_mode)
+            month_diff = diferencia_en_meses(from_date, to_date)
+            month_price = product_obj.list_price
 
             # if product_obj.bk_rent_mode == 'P':
             bk_slot_obj = request.env["pgmx.booking.product.plans"].browse([
                                                                            int(bk_plan)])
             line_values = {
                 'booking_plan_line_id': bk_slot_obj.id,
-                'price_unit': (day_price * day_diff) + bk_slot_obj.price,
-                'booking_date': bk_date if bk_date else None,
+                'price_unit': month_diff * (month_price + bk_slot_obj.price),
+                'booking_date': bk_date,
+                # 'booking_date_out': bk_date_out,
             }
 
             sale_order = request.website.sale_get_order()
