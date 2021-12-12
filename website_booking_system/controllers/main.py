@@ -80,9 +80,10 @@ class WebsiteSale(WebsiteSale):
                                                                            int(bk_plan)])
             line_values = {
                 'booking_plan_line_id': bk_slot_obj.id,
-                'price_unit': month_diff * (month_price + bk_slot_obj.price),
+                'price_unit': month_price + bk_slot_obj.price,
                 'booking_date': bk_date,
                 # 'booking_date_out': bk_date_out,
+                'product_uom_qty': month_diff
             }
 
             sale_order = request.website.sale_get_order()
@@ -138,39 +139,39 @@ class BookingReservation(http.Controller):
 
     # Update slots on week day selection
 
-    @http.route(['/booking/reservation/update/slots'], type='json', auth="public", methods=['POST'], website=True)
-    def booking_reservation_update_slots(self, **post):
-        w_day = post.get('w_day', False)
-        w_date = post.get('w_date', False)
-        w_date = datetime.strptime(w_date, '%Y-%m-%d').date()
-        product_id = post.get('product_id', False)
-        if not product_id:
-            return False
-        product_obj = request.env["product.template"].browse(product_id)
-        current_day_slots = product_obj.get_booking_slot_for_day(w_date)
-        values = {
-            'day_slots': current_day_slots,
-            'current_date': w_date,
-            'product': product_obj,
-        }
-        return request.env.ref("website_booking_system.booking_modal_bk_slots_n_plans_div")._render(values, engine='ir.qweb')
+    # @http.route(['/booking/reservation/update/slots'], type='json', auth="public", methods=['POST'], website=True)
+    # def booking_reservation_update_slots(self, **post):
+    #     w_day = post.get('w_day', False)
+    #     w_date = post.get('w_date', False)
+    #     w_date = datetime.strptime(w_date, '%Y-%m-%d').date()
+    #     product_id = post.get('product_id', False)
+    #     if not product_id:
+    #         return False
+    #     product_obj = request.env["product.template"].browse(product_id)
+    #     current_day_slots = product_obj.get_booking_slot_for_day(w_date)
+    #     values = {
+    #         'day_slots': current_day_slots,
+    #         'current_date': w_date,
+    #         'product': product_obj,
+    #     }
+    #     return request.env.ref("website_booking_system.booking_modal_bk_slots_n_plans_div")._render(values, engine='ir.qweb')
 
-    # Update plans on slot selection
-    @http.route(['/booking/reservation/slot/plans'], type='json', auth="public", methods=['POST'], website=True)
-    def booking_reservation_slot_plans(self, **post):
-        sel_date = post.get('sel_date', False)
-        sel_date = datetime.strptime(sel_date, '%Y-%m-%d').date()
-        time_slot_id = post.get('time_slot_id', False)
-        slot_plans = post.get('slot_plans', False)
-        product_id = post.get('product_id', False)
-        product_obj = request.env["product.template"].browse(product_id)
-        slot_plans = ast.literal_eval(slot_plans)
-        values = {
-            'd_plans': slot_plans,
-            'current_date': sel_date,
-            'product': product_obj,
-        }
-        return request.env.ref("website_booking_system.booking_sel_plans")._render(values, engine='ir.qweb')
+    # # Update plans on slot selection
+    # @http.route(['/booking/reservation/slot/plans'], type='json', auth="public", methods=['POST'], website=True)
+    # def booking_reservation_slot_plans(self, **post):
+    #     sel_date = post.get('sel_date', False)
+    #     sel_date = datetime.strptime(sel_date, '%Y-%m-%d').date()
+    #     time_slot_id = post.get('time_slot_id', False)
+    #     slot_plans = post.get('slot_plans', False)
+    #     product_id = post.get('product_id', False)
+    #     product_obj = request.env["product.template"].browse(product_id)
+    #     slot_plans = ast.literal_eval(slot_plans)
+    #     values = {
+    #         'd_plans': slot_plans,
+    #         'current_date': sel_date,
+    #         'product': product_obj,
+    #     }
+    #     return request.env.ref("website_booking_system.booking_sel_plans")._render(values, engine='ir.qweb')
 
     def get_default_date(self, product_id):
         product_obj = request.env["product.template"].browse(product_id)
@@ -301,7 +302,7 @@ class BookingReservation(http.Controller):
         day_price = product_obj.list_price
 
         return {
-            'price': day_price * (month_diff + plan_price)
+            'price': day_price + plan_price
         }
 
     @http.route(['/booking/reservation/cart/validate'], type='json', auth="public", methods=['POST'], website=True)
