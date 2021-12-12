@@ -417,7 +417,7 @@ odoo.define("website_booking_system.booking_n_reservation", function (require) {
                 bk_loader.hide()
                 bk_modal_err
                   .html(
-                    "This product already in your cart. Please remove it from the cart and try again."
+                    "Este producto ya está en tu carrito. Por favor remuevlo e intenta de nuevo"
                   )
                   .show()
                 setTimeout(function () {
