@@ -93,10 +93,12 @@ class WebsiteSale(WebsiteSale):
             sale_order.write({
                 'is_booking_type': True,
             })
+
         return res
 
     @http.route(['/shop/checkout'], type='http', auth="public", website=True)
     def checkout(self, **post):
+
         check = request.website.bk_products_validation()
         if not check:
             return request.redirect("/shop/cart")
@@ -111,6 +113,27 @@ class WebsiteSale(WebsiteSale):
         if order:
             order.payment_start_date = datetime.now()
         return super(WebsiteSale, self).payment(**post)
+
+    '''
+    Esta función se sobrescribe para que no modifique el price_list que tiene
+    el carrito y este se refleje igual en la sales order. 
+    '''
+    @http.route(['/shop/confirm_order'], type='http', auth="public", website=True, sitemap=False)
+    def confirm_order(self, **post):
+        order = request.website.sale_get_order()
+        redirection = self.checkout_redirection(
+            order) or self.checkout_check_address(order)
+        if redirection:
+            return redirection
+        order.onchange_partner_shipping_id()
+        order.order_line._compute_tax_id()
+        request.session['sale_last_order_id'] = order.id
+        # Esta es la linea que eliminamos.
+        # request.website.sale_get_order(update_pricelist=false)
+        extra_step = request.website.viewref('website_sale.extra_info_option')
+        if extra_step.active:
+            return request.redirect("/shop/extra_info")
+        return request.redirect("/shop/payment")
 
 
 class BookingReservation(http.Controller):
@@ -302,7 +325,7 @@ class BookingReservation(http.Controller):
         day_price = product_obj.list_price
 
         return {
-            'price': day_price + plan_price
+            'price': (day_price + plan_price) * month_diff
         }
 
     @http.route(['/booking/reservation/cart/validate'], type='json', auth="public", methods=['POST'], website=True)
