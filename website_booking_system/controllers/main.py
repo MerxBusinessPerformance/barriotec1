@@ -82,8 +82,11 @@ class WebsiteSale(WebsiteSale):
                 'booking_plan_line_id': bk_slot_obj.id,
                 'price_unit': month_price + bk_slot_obj.price,
                 'booking_date': bk_date,
-                # 'booking_date_out': bk_date_out,
-                'product_uom_qty': month_diff
+                'booking_date_out': bk_date_out,
+                'booked_plan_id': bk_slot_obj.id,
+                'product_uom_qty': month_diff,
+                'booking_plan_price': bk_slot_obj.price,
+                'booking_base_price': month_price,
             }
 
             sale_order = request.website.sale_get_order()
