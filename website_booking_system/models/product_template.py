@@ -213,7 +213,7 @@ class ProductTemplate(models.Model):
         string='Piso'
     )
     booking_area = fields.Char(
-        string='Área del departamento'
+        string='Vista del departamento'
     )
     booking_lookout_area = fields.Char(
         string='Área del balcón'
