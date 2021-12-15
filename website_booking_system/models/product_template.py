@@ -56,6 +56,10 @@ class SaleOrder(models.Model):
 
     is_booking_type = fields.Boolean(string="Booking Order")
     payment_start_date = fields.Datetime("Payment initiated time")
+    plan = fields.Char(
+         string="Booked Plan", store=True)
+ 
+
 
     def check_active_bk_transactions(self):
         self.ensure_one()

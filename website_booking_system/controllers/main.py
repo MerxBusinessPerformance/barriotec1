@@ -95,6 +95,7 @@ class WebsiteSale(WebsiteSale):
             order_line.write(line_values)
             sale_order.write({
                 'is_booking_type': True,
+                'plan':bk_slot_obj.plan_id.name
             })
 
         return res
