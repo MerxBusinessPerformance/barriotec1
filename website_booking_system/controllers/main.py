@@ -82,7 +82,7 @@ class WebsiteSale(WebsiteSale):
                 'booking_plan_line_id': bk_slot_obj.id,
                 'price_unit': month_price + bk_slot_obj.price,
                 'booking_date': bk_date,
-                # 'booking_date_out': bk_date_out,
+                'booking_date_out': bk_date_out,
                 'product_uom_qty': month_diff
             }
 
