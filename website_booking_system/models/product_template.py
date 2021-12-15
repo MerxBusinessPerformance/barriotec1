@@ -81,8 +81,6 @@ class SaleOrderLine(models.Model):
     booking_slot_id = fields.Many2one("booking.slot", string="Booking Slot")
     booking_date = fields.Date(string="Booking Date")
     booking_date_out = fields.Date(string="Booking Out Date")
-    booking_plan_price = fields.Float(string="Plan price")
-    booking_base_price = fields.Float(string="Base price")
     booked_slot_id = fields.Many2one(related="booking_slot_id.time_slot_id", string="Booked Slot", store=True)
     booked_plan_id = fields.Many2one(related="booking_slot_id.plan_id", string="Booked Plan", store=True)
     booking_plan_line_id = fields.Many2one(
