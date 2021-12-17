@@ -58,6 +58,19 @@ class SaleOrder(models.Model):
     payment_start_date = fields.Datetime("Payment initiated time")
     plan = fields.Char(
          string="Booked Plan", store=True)
+
+    partner_invoice_id = fields.Many2one(
+        'res.partner', string='Invoice Address',
+        readonly=True, required=False,
+        states={'draft': [('readonly', False)], 'sent': [
+            ('readonly', False)], 'sale': [('readonly', False)]},
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+    partner_shipping_id = fields.Many2one(
+        'res.partner', string='Delivery Address', readonly=True, required=False,
+        states={'draft': [('readonly', False)], 'sent': [
+            ('readonly', False)], 'sale': [('readonly', False)]},
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
+
  
 
 
