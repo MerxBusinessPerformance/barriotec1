@@ -17,7 +17,8 @@
 from odoo import api, http, tools, _
 from odoo.http import request
 from datetime import date, timedelta, datetime
-from odoo.addons.website_sale.controllers.main import WebsiteSale
+from odoo.addons.website_sale.controllers.main import WebsiteSale, WebsiteSaleForm
+from odoo.exceptions import ValidationError
 
 import ast
 import json
@@ -94,7 +95,7 @@ class WebsiteSale(WebsiteSale):
             order_line.write(line_values)
             sale_order.write({
                 'is_booking_type': True,
-                'plan':bk_slot_obj.plan_id.name
+                'plan': bk_slot_obj.plan_id.name
             })
 
         return res
@@ -119,7 +120,7 @@ class WebsiteSale(WebsiteSale):
 
     '''
     Esta función se sobrescribe para que no modifique el price_list que tiene
-    el carrito y este se refleje igual en la sales order. 
+    el carrito y este se refleje igual en la sales order.
     '''
     @http.route(['/shop/confirm_order'], type='http', auth="public", website=True, sitemap=False)
     def confirm_order(self, **post):
@@ -137,6 +138,81 @@ class WebsiteSale(WebsiteSale):
         if extra_step.active:
             return request.redirect("/shop/extra_info")
         return request.redirect("/shop/payment")
+
+    def _get_mandatory_billing_fields(self):
+        # deprecated for _get_mandatory_fields_billing which handle zip/state required
+        # return ["name", "email", "street", "city", "country_id"]
+        return ["name", "email"]
+
+    def _get_mandatory_shipping_fields(self):
+        # deprecated for _get_mandatory_fields_shipping which handle zip/state required
+        # return ["name", "street", "city", "country_id"]
+        return ["name"]
+
+    def _get_mandatory_fields_shipping(self, country_id=False):
+        print("Entro por aqui..............................")
+        req = self._get_mandatory_shipping_fields()
+        # if country_id:
+        #     country = request.env['res.country'].browse(country_id)
+        #     if country.state_required:
+        #         req += ['state_id']
+        #     if country.zip_required:
+        #         req += ['zip']
+        return req    
+    
+    '''
+        Sobreeescribimos las validaciones del shipping address
+    '''
+    def checkout_form_validate(self, mode, all_form_values, data):
+        # mode: tuple ('new|edit', 'billing|shipping')
+        # all_form_values: all values before preprocess
+        # data: values after preprocess
+        error = dict()
+        error_message = []
+
+        # Required fields from form
+        required_fields = [f for f in (all_form_values.get(
+            'field_required') or '').split(',') if f]
+        print("############## SOBRE ESCRITO!!!!!!!!!!!!!!!!")
+
+        # Required fields from mandatory field function
+        # country_id = int(data.get('country_id', False))
+        # required_fields += mode[1] == 'shipping' and self._get_mandatory_fields_shipping(
+        #     country_id) or self._get_mandatory_fields_billing(country_id)
+
+        # error message for empty required fields
+        for field_name in required_fields:
+            if not data.get(field_name):
+                error[field_name] = 'missing'
+
+        # email validation
+        if data.get('email') and not tools.single_email_re.match(data.get('email')):
+            error["email"] = 'error'
+            error_message.append(
+                _('Invalid Email! Please enter a valid email address.'))
+
+        for x in required_fields:
+            print("-required")
+            print(x)
+
+        # vat validation
+        Partner = request.env['res.partner']
+        # if data.get("vat") and hasattr(Partner, "check_vat"):
+        #     if country_id:
+        #         data["vat"] = Partner.fix_eu_vat_number(
+        #             country_id, data.get("vat"))
+        #     partner_dummy = Partner.new(self._get_vat_validation_fields(data))
+        #     try:
+        #         partner_dummy.check_vat()
+        #     except ValidationError as exception:
+        #         error["vat"] = 'error'
+        #         error_message.append(exception.args[0])
+
+        if [err for err in error.values() if err == 'missing']:
+            error_message.append(_('Some required fields are empty.'))
+
+        return error, error_message
+
 
 
 class BookingReservation(http.Controller):
@@ -340,3 +416,6 @@ class BookingReservation(http.Controller):
                 lambda l: l.product_id.product_tmpl_id.id == int(product_id))
             return False if len(order_line) else True
         return True
+
+
+    
