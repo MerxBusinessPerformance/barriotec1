@@ -24,7 +24,7 @@
                 <xpath expr="//field[@name='order_line']//tree//field[@name='product_uom_qty']" position="after">
                     <field name="booking_date" required="1" options="{'no_open':True,'no_create_edit':True,'no_quick_create':True,}"/>
                     <field name="booking_date_out" required="1" options="{'no_open':True,'no_create_edit':True,'no_quick_create':True,}"/>
-                    <field name="booking_slot_id" required="1" options="{'no_open':True,'no_create_edit':True,'no_quick_create':True,}"/>
+                    <field name="booking_slot_id" required="0" options="{'no_open':True,'no_create_edit':True,'no_quick_create':True,}"/>
 
 
                     <field name="booking_plan_price"
