@@ -63,17 +63,17 @@ class SaleOrderLine(models.Model):
             if rec.booking_date:
                 if not rec.product_id:
                     raise UserError(
-                        _('Please first select the product and proceed further.'))
+                        _('Primero selecciona un producto para continuar.'))
                 if not (rec.booking_date >= rec.product_id.br_start_date and rec.booking_date <= rec.product_id.br_end_date):
                     rec.booking_date = None
-                    raise UserError(_('Booking Date Should be between %s and %s' % (
+                    raise UserError(_('La fecha de booking debe estar entre %s y %s' % (
                         rec.product_id.br_start_date, rec.product_id.br_end_date)))
                 day = rec.booking_date.weekday()
-                day_valid = rec.product_id.booking_day_slot_ids.filtered(
-                    lambda o: o.name == Days[int(day)] and o.booking_status == 'open')
-                if len(day_valid) == 0:
-                    raise UserError(
-                        _('Booking is closed on this day, please select a different date.'))
+                # day_valid = rec.product_id.booking_day_slot_ids.filtered(
+                #     lambda o: o.name == Days[int(day)] and o.booking_status == 'open')
+                # if len(day_valid) == 0:
+                #     raise UserError(
+                #         _('Booking is closed on this day, please select a different date.'))
                 if rec.product_uom_qty and rec.booking_slot_id:
                     avl_qty = rec.product_id.product_tmpl_id.get_bk_slot_available_qty(
                         rec.booking_date, rec.booking_slot_id.id)
@@ -84,10 +84,10 @@ class SaleOrderLine(models.Model):
                     if rec.product_uom_qty > avl_qty:
                         raise UserError(_('Available quantity on %s for %s(%s) is %s' % (
                             rec.booking_date, rec.booking_slot_id.time_slot_id.name_get()[0][1], rec.booking_slot_id.plan_id.name, avl_qty)))
-                domain = [('slot_config_id', '=', day_valid.id)]
-                return {
-                    'domain': {'booking_slot_id': domain}
-                }
+                # domain = [('slot_config_id', '=', day_valid.id)]
+                # return {
+                #     'domain': {'booking_slot_id': domain}
+                # }
 
     @api.onchange('booking_slot_id', 'product_uom_qty')
     def onchange_quantity_available(self):
