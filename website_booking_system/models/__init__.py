@@ -18,3 +18,7 @@ from . import product_template
 from . import booking_config
 
 from . import pgmx_booking_product_plans
+
+from . import sale_order_booking
+from . import sale_order_line_booking
+from . import website_booking
