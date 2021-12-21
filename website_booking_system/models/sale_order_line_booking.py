@@ -27,10 +27,37 @@ class SaleOrderLine(models.Model):
         comodel_name='pgmx.booking.product.plans'
     )
 
+    @api.depends('product_uom_qty',
+                 'discount',
+                 'price_unit',
+                 'tax_id',
+                 'product_id',
+                 'booking_date',
+                 'booking_date_out'
+                 )
+    def _compute_amount(self):
+        """
+        Compute the amounts of the SO line.
+        """
+        for line in self:
+            plan = line.booking_plan_price
+            base = line.booking_base_price
+            line.price_unit = plan + base
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            taxes = line.tax_id.compute_all(price, line.order_id.currency_id, line.product_uom_qty,
+                                            product=line.product_id, partner=line.order_id.partner_shipping_id)
+            line.update({
+                'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+                'price_total': taxes['total_included'],
+                'price_subtotal': taxes['total_excluded'],
+            })
+            if self.env.context.get('import_file', False) and not self.env.user.user_has_groups('account.group_account_manager'):
+                line.tax_id.invalidate_cache(
+                    ['invoice_repartition_line_ids'], [line.tax_id.id])
+
     @api.depends('product_id', 'booking_date', 'booking_slot_id')
     def compute_booking_line_name(self):
         for rec in self:
-            rec.name = 'Hola mundo'
             product_obj = rec.product_id or False
             if product_obj and product_obj.is_booking_type:
                 name = "Reserva para " + product_obj.name
@@ -39,6 +66,7 @@ class SaleOrderLine(models.Model):
                 # if rec.booking_slot_id:
                 #     name += " (" + rec.booking_slot_id.name_get()[0][1] + ")"
                 rec.name = name
+                rec.booking_base_price = product_obj.list_price
         return
 
     @api.model

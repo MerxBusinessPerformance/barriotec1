@@ -29,9 +29,11 @@
 
                     <field name="booking_plan_price"
                         required="1"
+                        readonly="1"
                         options="{'no_open':True,'no_create_edit':True,'no_quick_create':True,}" />
                     <field name="booking_base_price"
                         required="1"
+                        readonly="1"
                         options="{'no_open':True,'no_create_edit':True,'no_quick_create':True,}" />
 
 
