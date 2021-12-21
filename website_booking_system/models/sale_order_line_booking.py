@@ -6,6 +6,10 @@ import pytz
 from .days import Days
 
 
+def diferencia_en_meses(d2, d1):
+    return (d1.year - d2.year) * 12 + d1.month - d2.month
+
+
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
@@ -29,11 +33,11 @@ class SaleOrderLine(models.Model):
             rec.name = 'Hola mundo'
             product_obj = rec.product_id or False
             if product_obj and product_obj.is_booking_type:
-                name = "Booking for " + product_obj.name
+                name = "Reserva para " + product_obj.name
                 if rec.booking_date:
-                    name += " on " + str(rec.booking_date)
-                if rec.booking_slot_id:
-                    name += " (" + rec.booking_slot_id.name_get()[0][1] + ")"
+                    name += " en " + str(rec.booking_date)
+                # if rec.booking_slot_id:
+                #     name += " (" + rec.booking_slot_id.name_get()[0][1] + ")"
                 rec.name = name
         return
 
@@ -88,6 +92,16 @@ class SaleOrderLine(models.Model):
                 # return {
                 #     'domain': {'booking_slot_id': domain}
                 # }
+
+    @api.onchange('booking_date', 'booking_date_out', 'product_uom_qty')
+    def check_general_data(self):
+        # Si hay dos fechas product_uom_qty debe ser igual a la diferencia en meses.
+        if self.booking_date and self.booking_date_out:
+            self.product_uom_qty = diferencia_en_meses(
+                self.booking_date, self.booking_date_out)
+        # Si solo hay booking_out_date ó booking_date, product_uom_qty debe no se debe modificar.
+        # if not (self.booking_date or self.booking_date_out ):
+        #     print('paso')
 
     @api.onchange('booking_slot_id', 'product_uom_qty')
     def onchange_quantity_available(self):
