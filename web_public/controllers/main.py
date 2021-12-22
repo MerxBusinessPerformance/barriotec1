@@ -27,6 +27,7 @@ class OdooController(http.Controller):
 
         productos = http.request.env['product.template'].search([
             ["is_booking_type", "=", True],
+            ["website_published", "=", True],
             ["categ_id.id", "=", categoriaId],
         ])
 
