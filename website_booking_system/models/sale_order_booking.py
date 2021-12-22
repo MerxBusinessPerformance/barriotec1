@@ -6,8 +6,6 @@ class SaleOrder(models.Model):
 
     is_booking_type = fields.Boolean(string="Booking Order")
     payment_start_date = fields.Datetime("Payment initiated time")
-    plan = fields.Char(
-        string="Booked Plan", store=True)
 
     partner_invoice_id = fields.Many2one(
         'res.partner', string='Invoice Address',

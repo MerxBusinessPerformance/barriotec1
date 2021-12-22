@@ -27,13 +27,31 @@ class SaleOrderLine(models.Model):
         comodel_name='pgmx.booking.product.plans'
     )
 
+    plan_id = fields.Many2one(
+        'booking.plan',
+        string='Plan',
+    )
+
+    # Mensajes de error
+    ERROR_PRODUCTO_NO_SELECCIONADO = 'Primero selecciona un departamento o estudio para continuar.'
+
+    @api.onchange('plan_id')
+    def obtener_precio_de_plan(self):
+        for line in self:
+            if line.product_id and line.plan_id:
+                for x in line.product_id.booking_plan_ids:
+                    if line.plan_id == x.plan_id:
+                        line.booking_plan_price = x.price
+                        # line._compute_amount()
+
     @api.depends('product_uom_qty',
                  'discount',
                  'price_unit',
                  'tax_id',
                  'product_id',
                  'booking_date',
-                 'booking_date_out'
+                 'booking_date_out',
+                 'plan_id'
                  )
     def _compute_amount(self):
         """
@@ -95,7 +113,7 @@ class SaleOrderLine(models.Model):
             if rec.booking_date:
                 if not rec.product_id:
                     raise UserError(
-                        _('Primero selecciona un producto para continuar.'))
+                        _(self.ERROR_PRODUCTO_NO_SELECCIONADO))
                 if not (rec.booking_date >= rec.product_id.br_start_date and rec.booking_date <= rec.product_id.br_end_date):
                     rec.booking_date = None
                     raise UserError(_('La fecha de booking debe estar entre %s y %s' % (

@@ -87,6 +87,7 @@ class WebsiteSale(WebsiteSale):
                 'product_uom_qty': month_diff,
                 'booking_plan_price': bk_slot_obj.price,
                 'booking_base_price': month_price,
+                'plan_id': bk_slot_obj.plan_id
             }
 
             sale_order = request.website.sale_get_order()
@@ -94,8 +95,7 @@ class WebsiteSale(WebsiteSale):
                 lambda l: l.product_id.id == int(product_id))
             order_line.write(line_values)
             sale_order.write({
-                'is_booking_type': True,
-                'plan': bk_slot_obj.plan_id.name
+                'is_booking_type': True
             })
 
         return res
@@ -158,8 +158,8 @@ class WebsiteSale(WebsiteSale):
         #         req += ['state_id']
         #     if country.zip_required:
         #         req += ['zip']
-        return req    
-    
+        return req
+
     def _get_mandatory_fields_billing(self, country_id=False):
         req = self._get_mandatory_billing_fields()
         # if country_id:
@@ -169,10 +169,11 @@ class WebsiteSale(WebsiteSale):
         #     if country.zip_required:
         #         req += ['zip']
         return req
-    
+
     '''
         Sobreeescribimos las validaciones del shipping address
     '''
+
     def checkout_form_validate(self, mode, all_form_values, data):
         # mode: tuple ('new|edit', 'billing|shipping')
         # all_form_values: all values before preprocess
@@ -234,8 +235,6 @@ class WebsiteSale(WebsiteSale):
             order.partner_shipping_id.country_id.id)
         if not all(order.partner_shipping_id.read(shipping_fields_required)[0].values()):
             return request.redirect('/shop/address?partner_id=%d' % order.partner_shipping_id.id)
-
-
 
 
 class BookingReservation(http.Controller):
@@ -439,6 +438,3 @@ class BookingReservation(http.Controller):
                 lambda l: l.product_id.product_tmpl_id.id == int(product_id))
             return False if len(order_line) else True
         return True
-
-
-    
